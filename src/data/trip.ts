@@ -425,7 +425,7 @@ export const CREW: CrewMember[] = [
     photo: "/crew/pavel.png",
   },
   {
-    name: "Rupon",
+    name: "Rupan",
     from: "London, UK",
     flag: "🇬🇧",
     team: "Germany",
@@ -433,10 +433,10 @@ export const CREW: CrewMember[] = [
     teamColor: "#000000",
     nickname: "Der Kaiser",
     role: "Food scout & navigator",
-    bio: "Lawyer by profession, German by birth — Rupon came into the world in Germany and never let anyone forget it. Will remind you, unprompted, that Die Mannschaft have won four World Cups. His arch nemesis is Argentina. His favourite fun fact to drop on Brasil fans: the 7-1. In a minivan. With nowhere to run.",
+    bio: "Lawyer by profession, German by birth — Rupan came into the world in Germany and never let anyone forget it. Will remind you, unprompted, that Die Mannschaft have won four World Cups. His arch nemesis is Argentina. His favourite fun fact to drop on Brasil fans: the 7-1. In a minivan. With nowhere to run.",
     facebook: "https://www.facebook.com/tanzir.m",
     arrivalOrder: 2,
-    photo: "/crew/rupon.png",
+    photo: "/crew/rupan.png",
   },
   {
     name: "Topu",

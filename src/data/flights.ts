@@ -22,7 +22,7 @@ export const FLIGHTS: FlightLeg[] = [
 
   // RUPON — London Heathrow → Atlanta (arrives June 10)
   {
-    crewName: "Rupon",
+    crewName: "Rupan",
     type: "arrival",
     date: "June 11",
     flightNumber: "AF3587",
@@ -122,7 +122,7 @@ export const FLIGHTS: FlightLeg[] = [
 
   // RUPON — New York JFK → London Heathrow (June 21)
   {
-    crewName: "Rupon",
+    crewName: "Rupan",
     type: "departure",
     date: "June 20",
     flightNumber: "KL2501",
