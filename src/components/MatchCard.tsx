@@ -60,7 +60,7 @@ interface MatchCardProps {
   featured?: boolean;
 }
 
-export default function MatchCard({ match, index = 0 }: MatchCardProps) {
+export default function MatchCard({ match }: MatchCardProps) {
   const theme = getTheme(match.id);
 
   return (
