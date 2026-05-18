@@ -1,0 +1,245 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ─────────────────────────────────────────────────────
+   DEFAULT THEME — "Uncle Sam" — USA 🇺🇸
+   Palette: Navy #0A3161 · Crimson #B22234 · White
+───────────────────────────────────────────────────── */
+:root,
+[data-theme="default"] {
+  --bg-page:         #FFFFFF;
+  --bg-surface:      #F9F9F9;
+  --bg-surface-2:    #F2F2F2;
+  --bg-nav:          #0A3161;
+  --bg-nav-mobile:   #07254A;
+  --bg-footer:       #0A3161;
+  --bg-hero-from:    #0A3161;
+  --bg-hero-mid:     #6B1530;
+  --bg-hero-to:      #B22234;
+  --bg-hero-orb-1:   rgba(178, 34, 52, 0.25);
+  --bg-hero-orb-2:   rgba(10, 49, 97, 0.30);
+  --bg-hero-orb-3:   rgba(178, 34, 52, 0.15);
+  --color-accent:    #B22234;
+  --color-accent-hover: #CC2840;
+  --color-accent-text: #FFFFFF;
+  --color-text:      #0A3161;
+  --color-text-2:    #1A3D6D;
+  --color-muted:     #5A6A80;
+  --color-border:    rgba(10, 49, 97, 0.12);
+  --color-border-hover: rgba(10, 49, 97, 0.25);
+  --color-nav-text:  #FFFFFF;
+  --color-nav-link:  rgba(255,255,255,0.78);
+  --color-nav-active: #FFFFFF;
+  --color-card-shadow: rgba(10, 49, 97, 0.08);
+  --color-hero-text: #FFFFFF;
+  --color-hero-muted: rgba(255,255,255,0.65);
+  --color-hero-badge-bg: rgba(178, 34, 52, 0.20);
+  --color-hero-badge-border: rgba(178, 34, 52, 0.50);
+  --color-hero-badge-text: #FF8A9A;
+  --color-stat-bg:   rgba(255,255,255,0.12);
+  --color-stat-border: rgba(255,255,255,0.18);
+  --color-route-bg:  rgba(10, 49, 97, 0.03);
+  --color-route-border: rgba(10, 49, 97, 0.10);
+}
+
+/* ─────────────────────────────────────────────────────
+   BRAZIL 🇧🇷 — Pitch Green + yellow
+───────────────────────────────────────────────────── */
+[data-theme="brazil"] {
+  --bg-page:         #F0F9F4;
+  --bg-surface:      #FFFFFF;
+  --bg-surface-2:    #E4F4EB;
+  --bg-nav:          #0D5C2E;
+  --bg-nav-mobile:   #094A25;
+  --bg-footer:       #0D5C2E;
+  --bg-hero-from:    #0D5C2E;
+  --bg-hero-mid:     #107535;
+  --bg-hero-to:      #094A25;
+  --bg-hero-orb-1:   rgba(244, 196, 48, 0.18);
+  --bg-hero-orb-2:   rgba(255, 255, 255, 0.06);
+  --bg-hero-orb-3:   rgba(244, 196, 48, 0.10);
+  --color-accent:    #F4C430;
+  --color-accent-hover: #F7D050;
+  --color-accent-text: #0D5C2E;
+  --color-text:      #0D5C2E;
+  --color-text-2:    #107535;
+  --color-muted:     #3D7A57;
+  --color-border:    rgba(13, 92, 46, 0.18);
+  --color-border-hover: rgba(13, 92, 46, 0.35);
+  --color-nav-text:  #F4C430;
+  --color-nav-link:  rgba(244, 196, 48, 0.80);
+  --color-nav-active: #F4C430;
+  --color-card-shadow: rgba(13, 92, 46, 0.12);
+  --color-hero-text: #FFFFFF;
+  --color-hero-muted: rgba(255,255,255,0.65);
+  --color-hero-badge-bg: rgba(244, 196, 48, 0.18);
+  --color-hero-badge-border: rgba(244, 196, 48, 0.45);
+  --color-hero-badge-text: #F4C430;
+  --color-stat-bg:   rgba(255,255,255,0.10);
+  --color-stat-border: rgba(255,255,255,0.15);
+  --color-route-bg:  rgba(13, 92, 46, 0.05);
+  --color-route-border: rgba(13, 92, 46, 0.12);
+}
+
+/* ─────────────────────────────────────────────────────
+   GERMANY 🇩🇪 — Trophy Gold
+───────────────────────────────────────────────────── */
+[data-theme="germany"] {
+  --bg-page:         #F5F3EC;
+  --bg-surface:      #FFFFFF;
+  --bg-surface-2:    #EDEADF;
+  --bg-nav:          #1A1A2E;
+  --bg-nav-mobile:   #111120;
+  --bg-footer:       #1A1A2E;
+  --bg-hero-from:    #1A1A2E;
+  --bg-hero-mid:     #22223C;
+  --bg-hero-to:      #111120;
+  --bg-hero-orb-1:   rgba(232, 184, 75, 0.16);
+  --bg-hero-orb-2:   rgba(232, 184, 75, 0.08);
+  --bg-hero-orb-3:   rgba(255, 255, 255, 0.04);
+  --color-accent:    #E8B84B;
+  --color-accent-hover: #F0C860;
+  --color-accent-text: #1A1A2E;
+  --color-text:      #1A1A2E;
+  --color-text-2:    #2E2E42;
+  --color-muted:     #6B6B80;
+  --color-border:    rgba(26, 26, 46, 0.12);
+  --color-border-hover: rgba(26, 26, 46, 0.25);
+  --color-nav-text:  #E8B84B;
+  --color-nav-link:  rgba(232, 184, 75, 0.75);
+  --color-nav-active: #E8B84B;
+  --color-card-shadow: rgba(26, 26, 46, 0.10);
+  --color-hero-text: #FFFFFF;
+  --color-hero-muted: rgba(255,255,255,0.60);
+  --color-hero-badge-bg: rgba(232, 184, 75, 0.15);
+  --color-hero-badge-border: rgba(232, 184, 75, 0.40);
+  --color-hero-badge-text: #E8B84B;
+  --color-stat-bg:   rgba(255,255,255,0.08);
+  --color-stat-border: rgba(255,255,255,0.12);
+  --color-route-bg:  rgba(26, 26, 46, 0.04);
+  --color-route-border: rgba(26, 26, 46, 0.10);
+}
+
+/* ─────────────────────────────────────────────────────
+   ARGENTINA 🇦🇷 — Rio de la Plata
+───────────────────────────────────────────────────── */
+[data-theme="argentina"] {
+  --bg-page:         #EEF9FF;
+  --bg-surface:      #FFFFFF;
+  --bg-surface-2:    #DFF3FF;
+  --bg-nav:          #00305A;
+  --bg-nav-mobile:   #002347;
+  --bg-footer:       #00305A;
+  --bg-hero-from:    #00305A;
+  --bg-hero-mid:     #003D70;
+  --bg-hero-to:      #002347;
+  --bg-hero-orb-1:   rgba(84, 212, 224, 0.20);
+  --bg-hero-orb-2:   rgba(255, 255, 255, 0.06);
+  --bg-hero-orb-3:   rgba(84, 212, 224, 0.10);
+  --color-accent:    #54D4E0;
+  --color-accent-hover: #72DCE8;
+  --color-accent-text: #00305A;
+  --color-text:      #00305A;
+  --color-text-2:    #003D70;
+  --color-muted:     #3A7A90;
+  --color-border:    rgba(84, 212, 224, 0.22);
+  --color-border-hover: rgba(84, 212, 224, 0.45);
+  --color-nav-text:  #FFFFFF;
+  --color-nav-link:  rgba(255,255,255,0.75);
+  --color-nav-active: #54D4E0;
+  --color-card-shadow: rgba(0, 48, 90, 0.10);
+  --color-hero-text: #FFFFFF;
+  --color-hero-muted: rgba(255,255,255,0.65);
+  --color-hero-badge-bg: rgba(84, 212, 224, 0.15);
+  --color-hero-badge-border: rgba(84, 212, 224, 0.45);
+  --color-hero-badge-text: #54D4E0;
+  --color-stat-bg:   rgba(255,255,255,0.10);
+  --color-stat-border: rgba(255,255,255,0.18);
+  --color-route-bg:  rgba(0, 48, 90, 0.05);
+  --color-route-border: rgba(0, 48, 90, 0.12);
+}
+
+/* ─────────────────────────────────────────────────────
+   BASE STYLES
+───────────────────────────────────────────────────── */
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+html, body {
+  max-width: 100vw;
+  overflow-x: hidden;
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: var(--bg-page);
+  color: var(--color-text);
+  font-family: "Inter", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--bg-page); }
+::-webkit-scrollbar-thumb { background: var(--color-border); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--color-accent); }
+
+/* ─── Utility classes using theme vars ─── */
+
+/* Accent gradient text */
+.text-accent-gradient {
+  background: linear-gradient(135deg, var(--color-accent-hover) 0%, var(--color-accent) 60%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Theme-aware surface card */
+.theme-card {
+  background-color: var(--bg-surface);
+  border: 1px solid var(--color-border);
+  box-shadow: 0 2px 16px var(--color-card-shadow);
+  transition: all 0.25s ease;
+}
+.theme-card:hover {
+  border-color: var(--color-border-hover);
+  box-shadow: 0 8px 32px var(--color-card-shadow);
+  transform: translateY(-3px);
+}
+
+/* Pitch pattern background */
+.pitch-pattern {
+  background-image:
+    linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+  background-size: 40px 40px;
+}
+
+/* Card hover (non-theme) */
+.card-hover {
+  transition: all 0.25s ease;
+}
+.card-hover:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 32px var(--color-card-shadow);
+}
+
+/* Section fade-up */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(24px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.fade-up { animation: fadeUp 0.6s ease-out forwards; }
+
+/* Match badge pulse */
+@keyframes matchPulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(245, 197, 66, 0.5); }
+  50%       { box-shadow: 0 0 0 8px rgba(245, 197, 66, 0); }
+}
+.match-pulse { animation: matchPulse 2s infinite; }
