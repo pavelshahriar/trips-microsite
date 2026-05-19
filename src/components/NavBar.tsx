@@ -39,13 +39,13 @@ export default function NavBar() {
           >
             <div
               className="w-8 h-8 rounded-full flex items-center justify-center shadow-lg flex-shrink-0"
-              style={{ background: "var(--color-accent)" }}
+              style={{ background: "var(--color-accent-dark)" }}
             >
-              <Trophy size={16} style={{ color: "var(--color-accent-text)" }} strokeWidth={2.5} />
+              <Trophy size={16} style={{ color: "var(--color-accent-dark-text)" }} strokeWidth={2.5} />
             </div>
             <span className="font-bold text-sm sm:text-base" style={{ color: "var(--color-nav-text)" }}>
               WC26{" "}
-              <span style={{ color: "var(--color-accent)" }}>The Boys</span>
+              <span style={{ color: "var(--color-accent-dark)" }}>The Boys</span>
             </span>
           </Link>
 

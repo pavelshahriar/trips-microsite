@@ -18,13 +18,15 @@ export default function Footer() {
           <div className="flex items-center gap-3">
             <div
               className="w-9 h-9 rounded-full flex items-center justify-center"
-              style={{ background: "var(--color-accent)" }}
+              style={{ background: "var(--color-accent-dark)" }}
             >
-              <Trophy size={18} style={{ color: "var(--color-accent-text)" }} strokeWidth={2.5} />
+              <Trophy size={18} style={{ color: "var(--color-accent-dark-text)" }} strokeWidth={2.5} />
             </div>
             <div>
               <div className="font-bold" style={{ color: "var(--color-nav-text)" }}>
-                WC26 The Boys Trip
+                WC26{" "}
+                <span style={{ color: "var(--color-accent-dark)" }}>The Boys</span>
+                {" "}Trip
               </div>
               <div className="text-xs" style={{ color: "var(--color-nav-link)" }}>
                 June 11–20, 2026
@@ -57,7 +59,7 @@ export default function Footer() {
             <Link
               href="/trip-vault"
               className="text-sm transition-colors"
-              style={{ color: "var(--color-accent)" }}
+              style={{ color: "var(--color-accent-dark)" }}
             >
               🔒 Trip Vault
             </Link>

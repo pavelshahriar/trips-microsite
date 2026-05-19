@@ -11,32 +11,34 @@
   --bg-page:         #FFFFFF;
   --bg-surface:      #F9F9F9;
   --bg-surface-2:    #F2F2F2;
-  --bg-nav:          #0A3161;
-  --bg-nav-mobile:   #07254A;
-  --bg-footer:       #0A3161;
-  --bg-hero-from:    #0A3161;
-  --bg-hero-mid:     #6B1530;
+  --bg-nav:          #6B1216;
+  --bg-nav-mobile:   #5A0F12;
+  --bg-footer:       #6B1216;
+  --bg-hero-from:    #6B1216;
+  --bg-hero-mid:     #8B1A20;
   --bg-hero-to:      #B22234;
-  --bg-hero-orb-1:   rgba(178, 34, 52, 0.25);
-  --bg-hero-orb-2:   rgba(10, 49, 97, 0.30);
-  --bg-hero-orb-3:   rgba(178, 34, 52, 0.15);
+  --bg-hero-orb-1:   rgba(255,255,255,0.08);
+  --bg-hero-orb-2:   rgba(10, 49, 97, 0.20);
+  --bg-hero-orb-3:   rgba(255,255,255,0.05);
   --color-accent:    #B22234;
   --color-accent-hover: #CC2840;
   --color-accent-text: #FFFFFF;
+  --color-accent-dark: #FFFFFF;
+  --color-accent-dark-text: #B22234;
   --color-text:      #0A3161;
   --color-text-2:    #1A3D6D;
   --color-muted:     #5A6A80;
   --color-border:    rgba(10, 49, 97, 0.12);
   --color-border-hover: rgba(10, 49, 97, 0.25);
-  --color-nav-text:  #FFFFFF;
+  --color-nav-text:  rgba(255,255,255,0.50);
   --color-nav-link:  rgba(255,255,255,0.78);
   --color-nav-active: #FFFFFF;
   --color-card-shadow: rgba(10, 49, 97, 0.08);
   --color-hero-text: #FFFFFF;
   --color-hero-muted: rgba(255,255,255,0.65);
-  --color-hero-badge-bg: rgba(178, 34, 52, 0.20);
-  --color-hero-badge-border: rgba(178, 34, 52, 0.50);
-  --color-hero-badge-text: #FF8A9A;
+  --color-hero-badge-bg: rgba(255,255,255,0.12);
+  --color-hero-badge-border: rgba(255,255,255,0.30);
+  --color-hero-badge-text: rgba(255,255,255,0.90);
   --color-stat-bg:   rgba(255,255,255,0.12);
   --color-stat-border: rgba(255,255,255,0.18);
   --color-route-bg:  rgba(10, 49, 97, 0.03);
@@ -62,12 +64,14 @@
   --color-accent:    #F4C430;
   --color-accent-hover: #F7D050;
   --color-accent-text: #0D5C2E;
+  --color-accent-dark: #F4C430;
+  --color-accent-dark-text: #0D5C2E;
   --color-text:      #0D5C2E;
   --color-text-2:    #107535;
   --color-muted:     #3D7A57;
   --color-border:    rgba(13, 92, 46, 0.18);
   --color-border-hover: rgba(13, 92, 46, 0.35);
-  --color-nav-text:  #F4C430;
+  --color-nav-text:  #FFFFFF;
   --color-nav-link:  rgba(244, 196, 48, 0.80);
   --color-nav-active: #F4C430;
   --color-card-shadow: rgba(13, 92, 46, 0.12);
@@ -101,12 +105,14 @@
   --color-accent:    #E8B84B;
   --color-accent-hover: #F0C860;
   --color-accent-text: #1A1A2E;
+  --color-accent-dark: #E8B84B;
+  --color-accent-dark-text: #1A1A2E;
   --color-text:      #1A1A2E;
   --color-text-2:    #2E2E42;
   --color-muted:     #6B6B80;
   --color-border:    rgba(26, 26, 46, 0.12);
   --color-border-hover: rgba(26, 26, 46, 0.25);
-  --color-nav-text:  #E8B84B;
+  --color-nav-text:  #FFFFFF;
   --color-nav-link:  rgba(232, 184, 75, 0.75);
   --color-nav-active: #E8B84B;
   --color-card-shadow: rgba(26, 26, 46, 0.10);
@@ -140,6 +146,8 @@
   --color-accent:    #54D4E0;
   --color-accent-hover: #72DCE8;
   --color-accent-text: #00305A;
+  --color-accent-dark: #54D4E0;
+  --color-accent-dark-text: #00305A;
   --color-text:      #00305A;
   --color-text-2:    #003D70;
   --color-muted:     #3A7A90;
@@ -192,9 +200,9 @@ body {
 
 /* ─── Utility classes using theme vars ─── */
 
-/* Accent gradient text */
+/* Accent gradient text — uses dark-context accent (white for US, gold for Brazil, etc.) */
 .text-accent-gradient {
-  background: linear-gradient(135deg, var(--color-accent-hover) 0%, var(--color-accent) 60%);
+  background: linear-gradient(135deg, var(--color-accent-dark) 0%, var(--color-accent-dark) 60%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;

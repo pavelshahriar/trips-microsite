@@ -74,7 +74,7 @@ export default function Hero() {
             animation: "fadeUp 0.6s ease-out 0.4s both",
           }}
         >
-          <MapPin size={14} style={{ color: "var(--color-accent)" }} />
+          <MapPin size={14} style={{ color: "var(--color-accent-dark)" }} />
           <span>ATL → NOLA → HOU → DAL → KC → DC → PHL → NYC</span>
         </div>
 
@@ -92,8 +92,8 @@ export default function Hero() {
             href="/itinerary"
             className="group flex items-center gap-2 font-bold px-8 py-4 rounded-xl transition-all duration-200 shadow-lg"
             style={{
-              background: "var(--color-accent)",
-              color: "var(--color-accent-text)",
+              background: "var(--color-accent-dark)",
+              color: "var(--color-accent-dark-text)",
             }}
           >
             <span>View Itinerary</span>
@@ -130,7 +130,7 @@ export default function Hero() {
                 border: "1px solid var(--color-stat-border)",
               }}
             >
-              <div className="text-3xl font-black" style={{ color: "var(--color-accent)" }}>
+              <div className="text-3xl font-black" style={{ color: "var(--color-accent-dark)" }}>
                 {stat.value}
               </div>
               <div className="text-xs mt-1 uppercase tracking-wider" style={{ color: "var(--color-hero-muted)" }}>
