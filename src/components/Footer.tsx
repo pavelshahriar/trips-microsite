@@ -72,7 +72,7 @@ export default function Footer() {
             Made with ❤️ for the boys.
           </p>
           <p className="text-xs" style={{ color: "var(--color-nav-link)", opacity: 0.5 }}>
-            2026 © SGHS '99 Boys
+            2026 © SGHS &apos; 99 Boys
           </p>
         </div>
       </div>
