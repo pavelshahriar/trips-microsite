@@ -248,6 +248,7 @@ export interface Match {
   url: string;          // FIFA/match info page
   teamNewsUrl: string;  // FIFA team news
   mapsUrl: string;      // Google Maps link for the stadium
+  fanFestUrl: string;   // Official FIFA Fan Festival page
   tickets: MatchTickets;
 }
 
@@ -267,6 +268,7 @@ export const MATCHES: Match[] = [
     url: "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026",
     teamNewsUrl: "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/teams/germany/team-news",
     mapsUrl: "https://maps.google.com/?q=NRG+Stadium,+Houston,+TX",
+    fanFestUrl: "https://www.fwc26houston.com/fifafanfestivalhou",
     tickets: {
       fifa: "https://fwc26-resale-usd.tickets.fifa.com/secure/selection/event/seat/performance/10229226700895/lang/en",
       stubhub: "https://www.stubhub.com/world-cup-houston-tickets-6-14-2026/event/153020800/?backUrl=%2Fworld-cup-tickets%2Fgrouping%2F45410&lt=33.858&lg=-84.216",
@@ -289,6 +291,7 @@ export const MATCHES: Match[] = [
     url: "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026",
     teamNewsUrl: "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/teams/argentina/team-news",
     mapsUrl: "https://maps.google.com/?q=GEHA+Field+at+Arrowhead+Stadium,+Kansas+City,+MO",
+    fanFestUrl: "https://kansascityfwc26.com/fifa-fan-festival/",
     tickets: {
       fifa: "https://fwc26-resale-usd.tickets.fifa.com/secure/selection/event/seat/performance/10229226700907/lang/en",
       stubhub: "https://www.stubhub.com/world-cup-kansas-city-tickets-6-16-2026/event/153021561/?backUrl=%2Fworld-cup-tickets%2Fgrouping%2F45410&lt=33.858&lg=-84.216",
@@ -311,6 +314,7 @@ export const MATCHES: Match[] = [
     url: "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026",
     teamNewsUrl: "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/teams/brazil/team-news",
     mapsUrl: "https://maps.google.com/?q=Lincoln+Financial+Field,+Philadelphia,+PA",
+    fanFestUrl: "https://phillyfwc26.com/fifa-fan-fest",
     tickets: {
       fifa: "https://fwc26-resale-usd.tickets.fifa.com/secure/selection/event/seat/performance/10229226700917/contact-advantages/10229997383410/lang/en",
       stubhub: "https://www.stubhub.com/world-cup-philadelphia-tickets-6-19-2026/event/153022742/?backUrl=%2Fworld-cup-tickets%2Fgrouping%2F45410&lt=33.858&lg=-84.216",

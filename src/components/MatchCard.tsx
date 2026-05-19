@@ -144,6 +144,15 @@ export default function MatchCard({ match }: MatchCardProps) {
             Team News
           </a>
           <a
+            href={match.fanFestUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-lg flex-1 justify-center transition-all duration-200 hover:opacity-80"
+            style={{ background: "rgba(255,255,255,0.15)", color: "#ffffff", border: "1px solid rgba(255,255,255,0.25)" }}
+          >
+            🎪 Fan Fest
+          </a>
+          <a
             href={match.mapsUrl}
             target="_blank"
             rel="noopener noreferrer"
@@ -151,7 +160,7 @@ export default function MatchCard({ match }: MatchCardProps) {
             style={{ background: "rgba(255,255,255,0.08)", color: "rgba(255,255,255,0.75)", border: "1px solid rgba(255,255,255,0.12)" }}
           >
             <MapPin size={11} />
-            Google Maps
+            Maps
           </a>
         </div>
 
