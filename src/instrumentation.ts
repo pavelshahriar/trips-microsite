@@ -15,13 +15,13 @@ export async function register() {
   if (typeof globalThis.localStorage !== "undefined") {
     try {
       if (typeof globalThis.localStorage.getItem !== "function") {
-        // @ts-expect-error — deleting a global that shouldn't exist server-side
+        // @ts-expect-error -- deleting non-standard global injected by Node v22 --localstorage-file
         delete globalThis.localStorage;
       }
     } catch {
       // If we can't even inspect it, nuke it
       try {
-        // @ts-expect-error
+        // @ts-expect-error -- deleting non-standard global injected by Node v22 --localstorage-file
         delete globalThis.localStorage;
       } catch {
         // Last resort: replace with undefined-returning stub
