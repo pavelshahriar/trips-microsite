@@ -69,7 +69,10 @@ export default function Footer() {
           style={{ borderTop: "1px solid rgba(255,255,255,0.08)" }}
         >
           <p className="text-xs" style={{ color: "var(--color-nav-link)", opacity: 0.5 }}>
-            Made with ❤️ for the boys. FIFA World Cup 2026 🏆 &mdash; No corporate vibes allowed.
+            Made with ❤️ for the boys.
+          </p>
+          <p className="text-xs" style={{ color: "var(--color-nav-link)", opacity: 0.5 }}>
+            2026 © SGHS '99 Boys
           </p>
         </div>
       </div>
