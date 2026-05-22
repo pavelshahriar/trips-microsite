@@ -3,7 +3,7 @@ import SectionHeader from "@/components/SectionHeader";
 import CrewPageClient from "@/components/CrewPageClient";
 import { CREW } from "@/data/trip";
 
-// Crew ordered by arrival in Atlanta, June 11
+// Crew ordered by arrival in Atlanta
 
 export const metadata: Metadata = {
   title: "The Crew | WC26 The Boys Trip",
@@ -27,7 +27,7 @@ export default function CrewPage() {
         <SectionHeader
           label="The Squad"
           title="The Crew"
-          subtitle="6 friends from 5 countries, converging on Atlanta. Football is the reason."
+          subtitle="7 friends from 5 countries, converging on Atlanta. Football is the reason."
         />
 
         {/* Arrival order note */}
@@ -41,14 +41,14 @@ export default function CrewPage() {
         >
           <span className="text-base flex-shrink-0">✈️</span>
           <span>
-            Crew listed in order of arrival in Atlanta on June 11 — no politics, just flight times. Nobody is more important than anyone else.{" "}
+            Crew listed in order of arrival in Atlanta — no politics, just flight times. Nobody is more important than anyone else.{" "}
             <span style={{ color: "var(--color-accent)", fontWeight: 600 }}>Probably.</span>
           </span>
         </div>
 
         {/* Team breakdown */}
         <div className="flex flex-wrap gap-3 mb-10">
-          {Object.entries(teamCounts).map(([team, count]) => {
+          {Object.entries(teamCounts).sort(([a], [b]) => a.localeCompare(b)).map(([team, count]) => {
             const member = CREW.find((m) => m.team === team)!;
             return (
               <div

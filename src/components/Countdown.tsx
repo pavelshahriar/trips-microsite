@@ -90,7 +90,7 @@ export default function Countdown() {
     return (
       <div className="bg-gold/10 border border-gold/30 rounded-2xl px-8 py-4 inline-block">
         <p className="text-gold font-bold text-lg">🚐 The trip is ON!</p>
-        <p className="text-slate-400 text-sm mt-1">June 11–20, 2026</p>
+        <p className="text-slate-400 text-sm mt-1">June 10–20, 2026</p>
       </div>
     );
   }
@@ -98,7 +98,7 @@ export default function Countdown() {
   return (
     <div>
       <p className="text-slate-500 text-xs uppercase tracking-widest mb-4">
-        Countdown to departure
+        Countdown to trip start
       </p>
       <div className="flex items-center justify-center gap-3 sm:gap-4">
         <CountUnit value={timeLeft.days} label="Days" />

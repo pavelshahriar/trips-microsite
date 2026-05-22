@@ -118,9 +118,9 @@ export default function Hero() {
           style={{ animation: "fadeUp 0.8s ease-out 0.7s both" }}
         >
           {[
-            { value: "10", label: "Days" },
+            { value: "11", label: "Days" },
             { value: "3",  label: "Matches" },
-            { value: "6",  label: "Bros" },
+            { value: "7",  label: "Bros" },
           ].map((stat) => (
             <div
               key={stat.label}

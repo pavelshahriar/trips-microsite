@@ -33,7 +33,7 @@ export default function RouteStrip() {
             >
               <div className="flex flex-col items-center group">
                 <div
-                  className="w-8 h-8 rounded-full flex items-center justify-center text-sm transition-all duration-200"
+                  className="w-11 h-11 rounded-full flex items-center justify-center text-xl transition-all duration-200"
                   style={{
                     background: "var(--bg-surface)",
                     border: "1px solid var(--color-border)",
@@ -42,7 +42,7 @@ export default function RouteStrip() {
                   {stop.emoji}
                 </div>
                 <span
-                  className="text-[10px] mt-1 transition-colors duration-200 group-hover:opacity-100"
+                  className="text-[11px] mt-1 transition-colors duration-200 group-hover:opacity-100"
                   style={{ color: "var(--color-muted)", opacity: 0.7 }}
                 >
                   {stop.abbr}

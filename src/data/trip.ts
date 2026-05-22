@@ -4,9 +4,9 @@
 export const TRIP_META = {
   name: "WC26 The Boys Trip",
   tagline: "Atlanta to NYC. Football, food, roads, and old friends.",
-  startDate: "2026-06-11",
+  startDate: "2026-06-10",
   endDate: "2026-06-20",
-  countdownTarget: "2026-06-12T06:00:00", // departure morning
+  countdownTarget: "2026-06-10T13:00:00", // first crew arrivals in Atlanta
   repo: "https://github.com/pavelshahriar/trips-microsite",
 };
 
@@ -40,6 +40,24 @@ export interface ItineraryDay {
 }
 
 export const ITINERARY: ItineraryDay[] = [
+  {
+    date: "June 10",
+    dayLabel: "Wed",
+    title: "Early Arrivals — Atlanta",
+    from: "Atlanta",
+    to: "Atlanta",
+    drive: "Local only",
+    hotel: "Home base / ATL",
+    hotelCity: "Atlanta, GA",
+    food: ["Local Atlanta spots", "Home dinner", "Catch-up drinks"],
+    highlights: [
+      "1:33 PM — Rupan lands from London Heathrow",
+      "Afternoon — First crew on the ground, explore Atlanta",
+      "10:05 PM — Topu lands from Chicago",
+      "10:43 PM — Rocky lands from Sydney (via Dallas)",
+      "Night — First crew dinner, get settled, trip eve energy",
+    ],
+  },
   {
     date: "June 11",
     dayLabel: "Thu",
@@ -497,6 +515,20 @@ export const CREW: CrewMember[] = [
     facebook: "https://www.facebook.com/STIGA.CARBON",
     arrivalOrder: 6,
     photo: "/crew/abbas.png",
+  },
+  {
+    name: "Jitu",
+    from: "Miami, FL",
+    flag: "🇺🇸",
+    team: "Argentina",
+    teamEmoji: "🇦🇷",
+    teamColor: "#74ACDF",
+    nickname: "El Showstopper",
+    role: "Late arrival, full spectacle",
+    bio: "A banker by profession, Jitu understands risk, return, and making a case under pressure — none of which helped when he asked his boss for leave. An avid Argentina fan, he's the most easygoing guy in the room right up until he has an opinion. Then he delivers it like breaking news, leaving everyone howling. Rolls in late — naturally, and flies out early from Houston, Jitu is always up for “Short duration, High Yield”.",
+    facebook: "https://www.facebook.com/mafruh",
+    arrivalOrder: 7,
+    photo: "/crew/jitu.png",
   },
 ];
 

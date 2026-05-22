@@ -24,7 +24,7 @@ export const FLIGHTS: FlightLeg[] = [
   {
     crewName: "Rupan",
     type: "arrival",
-    date: "June 11",
+    date: "June 10",
     flightNumber: "AF3587",
     airline: "Delta (operated by Air France)",
     from: "London Heathrow (LHR)",
@@ -38,7 +38,7 @@ export const FLIGHTS: FlightLeg[] = [
   {
     crewName: "Topu",
     type: "arrival",
-    date: "June 11",
+    date: "June 10",
     flightNumber: "AA2779",
     airline: "American Airlines",
     from: "Chicago O'Hare (ORD)",
@@ -52,7 +52,7 @@ export const FLIGHTS: FlightLeg[] = [
   {
     crewName: "Rocky",
     type: "arrival",
-    date: "June 11",
+    date: "June 10",
     flightNumber: "QF7 → QF4659",
     airline: "Qantas + American Airlines",
     from: "Sydney (SYD)",
@@ -90,7 +90,32 @@ export const FLIGHTS: FlightLeg[] = [
     note: "Via Minneapolis (MSP)",
   },
 
+  // JITU — Fort Lauderdale → Atlanta (arrives June 11)
+  {
+    crewName: "Jitu",
+    type: "arrival",
+    date: "June 11",
+    flightNumber: "F9 2717",
+    airline: "Frontier",
+    from: "Fort Lauderdale (FLL)",
+    to: "Atlanta (ATL)",
+    departureTime: "21:29",
+    arrivalTime: "23:50",
+    note: "Rolls in late — confirmation ZNECTH",
+  },
+
   // ── DEPARTURES ───────────────────────────────────
+
+  // JITU — Houston → Miami (June 14, after the Germany match)
+  {
+    crewName: "Jitu",
+    type: "departure",
+    date: "June 14",
+    airline: "Unknown",
+    from: "Houston IAH",
+    to: "Miami (MIA)",
+    note: "Early exit after Germany match — back to Miami 👋",
+  },
 
   // TOPU — Houston → Chicago (June 14, before the rest head to Dallas)
   {
