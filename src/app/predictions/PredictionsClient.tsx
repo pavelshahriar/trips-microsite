@@ -10,7 +10,7 @@ import {
   type TournamentPicks,
   type MatchPick,
 } from "@/data/predictions";
-import { Trophy, LogOut, ChevronRight, Check, Users, Lock } from "lucide-react";
+import { LogOut, ChevronRight, Check, Users, Lock } from "lucide-react";
 import SectionHeader from "@/components/SectionHeader";
 import { calculateScore, hasAnyResult } from "@/lib/scoring";
 import { MATCH_RESULTS } from "@/data/results";
@@ -65,7 +65,7 @@ export default function PredictionsClient() {
       setUser(session?.user ?? null);
     });
     return () => subscription.unsubscribe();
-  }, []);
+  }, [supabase.auth]);
 
   // ── Load predictor profile once user is known ───────────────
   const loadPredictor = useCallback(async (userId: string) => {
@@ -83,7 +83,7 @@ export default function PredictionsClient() {
       supabase.from("match_predictions").select("*").eq("predictor_id", predictorId),
     ]);
     if (tData) {
-      const { id, predictor_id, created_at, updated_at, ...picks } = tData;
+      const { id: _id, predictor_id: _pid, created_at: _ca, updated_at: _ua, ...picks } = tData;
       setTournamentPicks(picks as Partial<TournamentPicks>);
       setTournamentSaved(true);
     }
@@ -326,7 +326,7 @@ export default function PredictionsClient() {
               What should we call you?
             </h2>
             <p className="text-sm mb-6" style={{ color: "var(--color-muted)" }}>
-              Pick a display name and emoji — this is how you'll appear on the leaderboard.
+              Pick a display name and emoji — this is how you&apos;ll appear on the leaderboard.
             </p>
             <div className="mb-6">
               <label className="block text-xs font-semibold uppercase tracking-widest mb-2" style={{ color: "var(--color-muted)" }}>
@@ -369,7 +369,7 @@ export default function PredictionsClient() {
               disabled={!displayName.trim() || saving}
               className="w-full py-3 rounded-xl font-bold text-sm flex items-center justify-center gap-2 transition-all disabled:opacity-50"
               style={{ backgroundColor: "var(--color-accent)", color: "var(--color-accent-text)" }}>
-              {saving ? "Saving..." : <>Let's go <ChevronRight size={16} /></>}
+              {saving ? "Saving..." : <>Let&apos;s go <ChevronRight size={16} /></>}
             </button>
           </div>
         )}
