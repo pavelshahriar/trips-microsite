@@ -83,7 +83,8 @@ export default function PredictionsClient() {
       supabase.from("match_predictions").select("*").eq("predictor_id", predictorId),
     ]);
     if (tData) {
-      const { id: _id, predictor_id: _pid, created_at: _ca, updated_at: _ua, ...picks } = tData;
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      const { id, predictor_id, created_at, updated_at, ...picks } = tData;
       setTournamentPicks(picks as Partial<TournamentPicks>);
       setTournamentSaved(true);
     }
