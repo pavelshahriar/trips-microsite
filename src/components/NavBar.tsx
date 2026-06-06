@@ -13,6 +13,7 @@ const NAV_LINKS = [
   { href: "/venues", label: "Venues" },
   { href: "/crew", label: "Crew" },
   { href: "/news", label: "News" },
+  { href: "/predictions", label: "Predictions" },
   { href: "/trip-vault", label: "Trip Vault" },
 ];
 
@@ -54,6 +55,7 @@ export default function NavBar() {
             {NAV_LINKS.map((link) => {
               const isActive = pathname === link.href;
               const isVault = link.href === "/trip-vault";
+              const isPredictions = link.href === "/predictions";
               return (
                 <Link
                   key={link.href}
@@ -62,17 +64,20 @@ export default function NavBar() {
                   style={{
                     color: isActive
                       ? "var(--color-nav-active)"
+                      : isPredictions
+                      ? "var(--color-accent-dark)"
                       : "var(--color-nav-link)",
                     background: isActive
                       ? "rgba(255,255,255,0.08)"
                       : "transparent",
-                    border: isVault
+                    border: isVault || isPredictions
                       ? "1px solid rgba(255,255,255,0.15)"
                       : "none",
-                    marginLeft: isVault ? "8px" : "0",
+                    marginLeft: isVault || isPredictions ? "8px" : "0",
+                    fontWeight: isPredictions ? 700 : undefined,
                   }}
                 >
-                  {isVault ? `🔒 ${link.label}` : link.label}
+                  {isVault ? `🔒 ${link.label}` : isPredictions ? `🏆 ${link.label}` : link.label}
                 </Link>
               );
             })}
@@ -108,6 +113,7 @@ export default function NavBar() {
               {NAV_LINKS.map((link) => {
                 const isActive = pathname === link.href;
                 const isVault = link.href === "/trip-vault";
+                const isPredictions = link.href === "/predictions";
                 return (
                   <Link
                     key={link.href}
@@ -115,12 +121,13 @@ export default function NavBar() {
                     onClick={() => setMenuOpen(false)}
                     className="px-4 py-3 rounded-lg text-sm font-medium transition-all duration-200"
                     style={{
-                      color: isActive ? "var(--color-nav-active)" : "var(--color-nav-link)",
+                      color: isActive ? "var(--color-nav-active)" : isPredictions ? "var(--color-accent-dark)" : "var(--color-nav-link)",
                       background: isActive ? "rgba(255,255,255,0.08)" : "transparent",
-                      border: isVault ? "1px solid rgba(255,255,255,0.15)" : "none",
+                      border: isVault || isPredictions ? "1px solid rgba(255,255,255,0.15)" : "none",
+                      fontWeight: isPredictions ? 700 : undefined,
                     }}
                   >
-                    {isVault ? `🔒 ${link.label}` : link.label}
+                    {isVault ? `🔒 ${link.label}` : isPredictions ? `🏆 ${link.label}` : link.label}
                   </Link>
                 );
               })}
