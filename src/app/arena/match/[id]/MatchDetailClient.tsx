@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 "use client";
 
 import { useState, useEffect, useRef } from "react";
@@ -305,41 +306,6 @@ function PlayerCard({ player }: { player: KeyPlayer }) {
           </p>
         )}
       </div>
-    </div>
-  );
-}
-
-// ── Team label chip (in carousel) ────────────────────────────────
-
-function TeamChip({
-  flag,
-  crest,
-  name,
-}: {
-  flag: string;
-  crest?: string;
-  name: string;
-}) {
-  return (
-    <div
-      className="flex-shrink-0 w-24 rounded-2xl flex flex-col items-center justify-center gap-2 p-3"
-      style={{
-        scrollSnapAlign: "start",
-        backgroundColor: "color-mix(in srgb, var(--color-accent) 8%, transparent)",
-        border: "1px solid color-mix(in srgb, var(--color-accent) 20%, transparent)",
-      }}
-    >
-      {crest ? (
-        <img src={crest} alt={name} className="w-10 h-10 object-contain" />
-      ) : (
-        <span className="text-3xl">{flag}</span>
-      )}
-      <p
-        className="text-xs font-bold text-center leading-snug"
-        style={{ color: "var(--color-text)" }}
-      >
-        {name}
-      </p>
     </div>
   );
 }
