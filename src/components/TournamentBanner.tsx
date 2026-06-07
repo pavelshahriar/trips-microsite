@@ -14,7 +14,7 @@
 import { useEffect, useState, useMemo } from "react";
 import Link from "next/link";
 import type { FDMatch } from "@/lib/football-data";
-import { getFlag, getStageName, isMatchLive, isMatchFinished } from "@/lib/football-data";
+import { getFlag, getStageName, isMatchLive } from "@/lib/football-data";
 
 // ── Types ─────────────────────────────────────────────────────────
 

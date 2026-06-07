@@ -3,7 +3,6 @@
 import { useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { X, Download } from "lucide-react";
-import Image from "next/image";
 import type { CrewMember } from "@/data/trip";
 
 interface CrewModalProps {
