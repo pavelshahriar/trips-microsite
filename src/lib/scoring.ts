@@ -141,3 +141,126 @@ export function calculateScore(
 export function hasAnyResult(): boolean {
   return Object.values(MATCH_RESULTS).some((r) => r.final);
 }
+
+// ============================================================
+// Phase 2: Live-results scoring (football-data.org)
+// ============================================================
+
+/**
+ * A normalised result record — compatible with both the manual
+ * results.ts shape and the football-data.org API shape.
+ */
+export interface MatchResultData {
+  winner: string;          // home-team name, away-team name, or "Draw"
+  score_home: number;
+  score_away: number;
+  first_scorer?: string;
+  final: boolean;          // false until the match is finished
+}
+
+/** Score a single pick against an explicit result (no static lookup). */
+export function scoreMatchPickWithResult(
+  pick: Partial<MatchPick>,
+  result: MatchResultData
+): { points: number; details: ScoreDetail[] } {
+  if (!result.final) return { points: 0, details: [] };
+
+  const details: ScoreDetail[] = [];
+  let points = 0;
+
+  // Winner (1 pt)
+  const correctWinner = pick.winner === result.winner;
+  if (correctWinner) {
+    points += 1;
+    details.push({ label: "Correct winner", points: 1, correct: true });
+  } else {
+    details.push({ label: "Wrong winner", points: 0, correct: false });
+  }
+
+  // Exact score (3 pts, only if winner also correct)
+  if (
+    correctWinner &&
+    pick.score_home !== null &&
+    pick.score_home !== undefined &&
+    pick.score_away !== null &&
+    pick.score_away !== undefined &&
+    pick.score_home === result.score_home &&
+    pick.score_away === result.score_away
+  ) {
+    points += 3;
+    details.push({ label: "Exact score", points: 3, correct: true });
+  }
+
+  // First goalscorer (5 pts)
+  if (pick.first_scorer && result.first_scorer && pick.first_scorer === result.first_scorer) {
+    points += 5;
+    details.push({ label: `First scorer: ${pick.first_scorer}`, points: 5, correct: true });
+  }
+
+  return { points, details };
+}
+
+/**
+ * Full score for a predictor using a live results map.
+ *
+ * liveResults merges:
+ *  - entries from /api/arena/results (football-data.org FINISHED matches)
+ *  - entries from MATCH_RESULTS (manual crew-match results)
+ *
+ * match_id can be a football-data.org integer stringified ("12345")
+ * OR one of the legacy crew-match string IDs ("houston-germany").
+ */
+export function calculateScoreFromResults(
+  tournamentPicks: Partial<TournamentPicks> | null,
+  matchPicks: MatchPick[],
+  liveResults: Record<string, MatchResultData>
+): ScoreBreakdown {
+  const matchPointsMap: Record<string, number> = {};
+  const allDetails: ScoreDetail[] = [];
+  let matchTotal = 0;
+
+  matchPicks.forEach((pick) => {
+    const result = liveResults[pick.match_id];
+    if (!result) {
+      matchPointsMap[pick.match_id] = 0;
+      return;
+    }
+    const { points, details } = scoreMatchPickWithResult(pick, result);
+    matchPointsMap[pick.match_id] = points;
+    matchTotal += points;
+    allDetails.push(...details.map((d) => ({ ...d, label: `[${pick.match_id}] ${d.label}` })));
+  });
+
+  const { points: tournamentTotal, details: tournamentDetails } = tournamentPicks
+    ? scoreTournamentPicks(tournamentPicks)
+    : { points: 0, details: [] };
+
+  return {
+    total: matchTotal + tournamentTotal,
+    matchPoints: matchPointsMap,
+    tournamentPoints: tournamentTotal,
+    details: [...allDetails, ...tournamentDetails],
+  };
+}
+
+/**
+ * Build a unified results map from static MATCH_RESULTS + live API data.
+ * liveApiResults comes from /api/arena/results.
+ */
+export function buildResultsMap(
+  liveApiResults: Record<string, MatchResultData>
+): Record<string, MatchResultData> {
+  // Start with manual crew-match results
+  const base: Record<string, MatchResultData> = {};
+  for (const [id, r] of Object.entries(MATCH_RESULTS)) {
+    base[id] = {
+      winner: r.winner,
+      score_home: r.score_home,
+      score_away: r.score_away,
+      first_scorer: r.first_scorer || undefined,
+      final: r.final,
+    };
+  }
+  // Overlay with live API results (API data wins for same IDs)
+  return { ...base, ...liveApiResults };
+}

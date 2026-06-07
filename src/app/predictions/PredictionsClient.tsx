@@ -12,7 +12,13 @@ import {
 } from "@/data/predictions";
 import { LogOut, ChevronRight, Check, Users, Lock } from "lucide-react";
 import SectionHeader from "@/components/SectionHeader";
-import { calculateScore, hasAnyResult } from "@/lib/scoring";
+import {
+  calculateScore,
+  calculateScoreFromResults,
+  buildResultsMap,
+  hasAnyResult,
+  type MatchResultData,
+} from "@/lib/scoring";
 import { MATCH_RESULTS } from "@/data/results";
 
 type Step = "login" | "profile" | "tournament" | "matches" | "leaderboard";
@@ -52,6 +58,8 @@ export default function PredictionsClient() {
   // Leaderboard
   const [leaderboard, setLeaderboard] = useState<LeaderboardEntry[]>([]);
   const [leaderboardLoading, setLeaderboardLoading] = useState(false);
+  // Live results map: merges manual results.ts + API finished matches
+  const [liveResults, setLiveResults] = useState<Record<string, MatchResultData> | null>(null);
 
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -207,12 +215,25 @@ export default function PredictionsClient() {
   // ── Load leaderboard ────────────────────────────────────────
   const loadLeaderboard = useCallback(async () => {
     setLeaderboardLoading(true);
-    const [{ data: preds }, { data: tPicks }, { data: mPicks }] = await Promise.all([
-      supabase.from("predictors").select("*").order("created_at"),
-      supabase.from("tournament_predictions").select("*"),
-      supabase.from("match_predictions").select("*"),
+
+    // Fetch Supabase data + live API results in parallel
+    const [supabaseResults, apiResponse] = await Promise.all([
+      Promise.all([
+        supabase.from("predictors").select("*").order("created_at"),
+        supabase.from("tournament_predictions").select("*"),
+        supabase.from("match_predictions").select("*"),
+      ]),
+      fetch("/api/arena/results").then((r) => r.json()).catch(() => ({ results: {} })),
     ]);
+
+    const [{ data: preds }, { data: tPicks }, { data: mPicks }] = supabaseResults;
     if (!preds) { setLeaderboardLoading(false); return; }
+
+    // Build unified results map: static results.ts + live API data
+    const apiResults: Record<string, MatchResultData> = apiResponse?.results ?? {};
+    const unified = buildResultsMap(apiResults);
+    setLiveResults(unified);
+
     const entries: LeaderboardEntry[] = preds.map((p: Predictor) => ({
       predictor: p,
       tournament: tPicks?.find((t: { predictor_id: string }) => t.predictor_id === p.id) ?? null,
@@ -651,10 +672,16 @@ export default function PredictionsClient() {
                 {[...leaderboard]
                   .map(entry => ({
                     ...entry,
-                    score: calculateScore(
-                      entry.tournament as Partial<TournamentPicks> | null,
-                      entry.matches as MatchPick[]
-                    ),
+                    score: liveResults
+                      ? calculateScoreFromResults(
+                          entry.tournament as Partial<TournamentPicks> | null,
+                          entry.matches as MatchPick[],
+                          liveResults
+                        )
+                      : calculateScore(
+                          entry.tournament as Partial<TournamentPicks> | null,
+                          entry.matches as MatchPick[]
+                        ),
                   }))
                   .sort((a, b) => b.score.total - a.score.total)
                   .map((entry, i) => {
@@ -686,10 +713,12 @@ export default function PredictionsClient() {
                         </div>
 
                         {/* Match result breakdown — only show if results exist */}
-                        {hasAnyResult() && entry.matches.length > 0 && (
+                        {(hasAnyResult() || (liveResults && Object.values(liveResults).some(r => r.final))) && entry.matches.length > 0 && (
                           <div className="flex flex-wrap gap-2 mb-3">
                             {entry.matches.map((m: MatchPick & { match_id: string }) => {
-                              const result = MATCH_RESULTS[m.match_id];
+                              const result = liveResults
+                                ? liveResults[m.match_id]
+                                : MATCH_RESULTS[m.match_id];
                               if (!result?.final) return null;
                               const pts = entry.score.matchPoints[m.match_id] ?? 0;
                               return (

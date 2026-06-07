@@ -81,7 +81,7 @@ function StatusBadge({ status }: { status: FDMatch["status"] }) {
     return (
       <span
         className="text-xs font-bold px-2.5 py-1 rounded-full"
-        style={{ backgroundColor: "rgba(255,255,255,0.06)", color: "var(--color-muted)", border: "1px solid var(--color-border)" }}
+        style={{ backgroundColor: "var(--bg-page)", color: "var(--color-muted)", border: "1px solid var(--color-border)" }}
       >
         FT
       </span>
@@ -242,7 +242,7 @@ function MatchCard({ match, isCrewMatch }: { match: FDMatch; isCrewMatch: boolea
             <div
               className="w-full flex items-center justify-center gap-2 py-2.5 rounded-xl text-xs font-semibold"
               style={{
-                backgroundColor: "rgba(255,255,255,0.05)",
+                backgroundColor: "var(--bg-page)",
                 color: "var(--color-muted)",
                 border: "1px solid var(--color-border)",
               }}
@@ -351,7 +351,7 @@ function QuestionOfTheDay({ question }: { question: DailyQuestion }) {
                     width: `${pct}%`,
                     backgroundColor: isMyVote
                       ? `${categoryColors[question.category] ?? "var(--color-accent)"}25`
-                      : "rgba(255,255,255,0.04)",
+                      : "color-mix(in srgb, var(--color-text) 4%, transparent)",
                   }}
                 />
               )}

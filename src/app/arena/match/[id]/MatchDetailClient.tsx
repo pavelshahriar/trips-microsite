@@ -25,6 +25,7 @@ import {
   isMatchLive,
 } from "@/lib/football-data";
 import { getKeyPlayers, type KeyPlayer } from "@/data/key-players";
+import MatchPredictionWidget from "./MatchPredictionWidget";
 
 // ── Crew match detection ─────────────────────────────────────────
 
@@ -880,41 +881,6 @@ function StandingsSection({ match, standings }: { match: FDMatch; standings: FDS
   );
 }
 
-// ── Prediction CTA ────────────────────────────────────────────────
-
-function PredictionCTA({ match, isCrew }: { match: FDMatch; isCrew: boolean }) {
-  const finished = isMatchFinished(match.status);
-  const live = isMatchLive(match.status);
-  if (finished || live) return null;
-
-  const homeFlag = getFlag(match.homeTeam.name);
-  const awayFlag = getFlag(match.awayTeam.name);
-
-  return (
-    <div
-      className="rounded-2xl p-5 text-center"
-      style={{
-        backgroundColor: "color-mix(in srgb, var(--color-accent) 8%, transparent)",
-        border: "1.5px solid color-mix(in srgb, var(--color-accent) 30%, transparent)",
-      }}
-    >
-      <p className="text-base font-black mb-1" style={{ color: "var(--color-text)" }}>
-        {homeFlag} vs {awayFlag}
-      </p>
-      <p className="text-sm mb-4" style={{ color: "var(--color-muted)" }}>
-        Who do you think wins? Lock in your prediction before kick-off.
-      </p>
-      <Link
-        href={isCrew ? "/predictions?tab=matches" : "/predictions?tab=tournament"}
-        className="inline-flex items-center gap-2 px-6 py-3 rounded-xl font-bold text-sm transition-all hover:opacity-80"
-        style={{ backgroundColor: "var(--color-accent)", color: "var(--color-accent-text)" }}
-      >
-        ⚽ Make your prediction
-      </Link>
-    </div>
-  );
-}
-
 // ── Main component ────────────────────────────────────────────────
 
 interface Props {
@@ -926,7 +892,6 @@ interface Props {
 }
 
 export default function MatchDetailClient({ match, h2h, standings, homeSquad, awaySquad }: Props) {
-  const crew = isCrewMatch(match);
 
   return (
     <div className="pt-20 pb-20 min-h-screen">
@@ -942,7 +907,7 @@ export default function MatchDetailClient({ match, h2h, standings, homeSquad, aw
         <MatchHero match={match} />
 
         <div className="mb-5">
-          <PredictionCTA match={match} isCrew={crew} />
+          <MatchPredictionWidget match={match} />
         </div>
 
         <div className="flex flex-col gap-5">

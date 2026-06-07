@@ -169,9 +169,9 @@ function PreTournamentBanner({ msLeft, context }: { msLeft: number; context: str
                 href="/arena"
                 className="inline-flex items-center gap-1.5 px-4 py-2.5 rounded-xl text-xs font-semibold transition-all hover:opacity-85"
                 style={{
-                  backgroundColor: "rgba(255,255,255,0.06)",
-                  color: "rgba(255,255,255,0.7)",
-                  border: "1px solid rgba(255,255,255,0.1)",
+                  backgroundColor: "var(--bg-page)",
+                  color: "var(--color-text)",
+                  border: "1px solid var(--color-border)",
                 }}
               >
                 ⚽ Browse all 104 matches
@@ -235,7 +235,7 @@ function LiveBanner({ liveMatches }: { liveMatches: FDMatch[] }) {
             </div>
 
             {/* Stage */}
-            <span className="text-xs hidden sm:inline" style={{ color: "rgba(255,255,255,0.4)" }}>
+            <span className="text-xs hidden sm:inline" style={{ color: "var(--color-muted)" }}>
               {getStageName(match.stage, match.group)}
             </span>
           </div>
@@ -256,10 +256,10 @@ function LiveBanner({ liveMatches }: { liveMatches: FDMatch[] }) {
               <span
                 key={i}
                 className="w-1.5 h-1.5 rounded-full transition-all"
-                style={{ backgroundColor: i === idx ? "#ef4444" : "rgba(255,255,255,0.2)" }}
+                style={{ backgroundColor: i === idx ? "#ef4444" : "var(--color-border)" }}
               />
             ))}
-            <span className="text-xs ml-1" style={{ color: "rgba(255,255,255,0.4)" }}>
+            <span className="text-xs ml-1" style={{ color: "var(--color-muted)" }}>
               {liveMatches.length} matches live
             </span>
           </div>
@@ -348,7 +348,7 @@ function MatchdayBanner({
             {isToday && msLeft > 0 && (
               <div
                 className="hidden sm:flex flex-col items-center px-3 py-2 rounded-xl flex-shrink-0"
-                style={{ backgroundColor: kicksOffSoon ? "rgba(255,200,0,0.12)" : "rgba(255,255,255,0.05)", border: "1px solid var(--color-border)" }}
+                style={{ backgroundColor: kicksOffSoon ? "color-mix(in srgb, var(--color-accent) 12%, transparent)" : "var(--bg-page)", border: "1px solid var(--color-border)" }}
               >
                 <span
                   className="text-base font-black tabular-nums"
@@ -412,7 +412,7 @@ function BetweenMatchesBanner({ nextMatch, context, hideCta }: { nextMatch: FDMa
           href="/predictions#leaderboard"
           className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-semibold transition-all hover:opacity-85 flex-shrink-0"
           style={{
-            backgroundColor: "rgba(255,255,255,0.06)",
+            backgroundColor: "var(--bg-page)",
             color: "var(--color-text)",
             border: "1px solid var(--color-border)",
           }}
