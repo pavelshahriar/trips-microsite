@@ -1,3 +1,4 @@
+declare module "*.css";
 import type { Metadata } from "next";
 import "./globals.css";
 import NavBar from "@/components/NavBar";
@@ -47,8 +48,8 @@ export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en" data-theme="default">
-      <body className="antialiased" style={{ minHeight: "100vh" }}>
+    <html lang="en" data-theme="default" suppressHydrationWarning>
+      <body className="antialiased" style={{ minHeight: "100vh" }} suppressHydrationWarning>
         <ThemeProvider>
           <NavBar />
           <main className="min-h-screen">{children}</main>

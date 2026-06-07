@@ -116,7 +116,12 @@ export default function PredictionsClient() {
       if (p) {
         setPredictor(p);
         await loadExistingPicks(p.id);
-        setStep("tournament");
+        // If URL contains ?tab=matches (e.g. from "Make your pick" on a crew match),
+        // jump straight to the matches tab instead of the default tournament tab.
+        const params = new URLSearchParams(window.location.search);
+        const tabParam = params.get("tab") as Step | null;
+        const validTabs: Step[] = ["tournament", "matches", "leaderboard"];
+        setStep(tabParam && validTabs.includes(tabParam) ? tabParam : "tournament");
       } else {
         // Pre-fill name from OAuth
         const name = user.user_metadata?.full_name || user.user_metadata?.name || "";
@@ -184,6 +189,11 @@ export default function PredictionsClient() {
   // ── Save a match pick ───────────────────────────────────────
   const saveMatchPick = async (matchId: string, pick: Partial<MatchPick>) => {
     if (!predictor) return;
+
+    // Hard lock: silently reject saves for matches whose kickoff has passed
+    const matchDef = PREDICTION_MATCHES.find((m) => m.id === matchId);
+    if (matchDef && new Date() > new Date(matchDef.kickoff)) return;
+
     const payload = { predictor_id: predictor.id, match_id: matchId, ...pick, updated_at: new Date().toISOString() };
     const existing = matchPicks[matchId];
     if (existing?.match_id) {
