@@ -16,6 +16,8 @@ import {
 } from "lucide-react";
 import {
   type FDMatch,
+  type FDGoal,
+  type FDBooking,
   type FDH2HResponse,
   type FDStandingGroup,
   type FDSquadPlayer,
@@ -40,7 +42,7 @@ function isCrewMatch(match: FDMatch): boolean {
   return CREW_MATCHES.some(
     (cm) =>
       cm.date === d &&
-      (cm.teams.includes(match.homeTeam.name) || cm.teams.includes(match.awayTeam.name))
+      (cm.teams.includes(match.homeTeam.name ?? "") || cm.teams.includes(match.awayTeam.name ?? ""))
   );
 }
 
@@ -314,8 +316,8 @@ function PlayerCard({ player }: { player: KeyPlayer }) {
 // ── Key players section (dual carousel) ──────────────────────────
 
 function KeyPlayersSection({ match }: { match: FDMatch }) {
-  const homePlayers = getKeyPlayers(match.homeTeam.name);
-  const awayPlayers = getKeyPlayers(match.awayTeam.name);
+  const homePlayers = getKeyPlayers(match.homeTeam.name ?? "");
+  const awayPlayers = getKeyPlayers(match.awayTeam.name ?? "");
   const homeFlag = getFlag(match.homeTeam.name);
   const awayFlag = getFlag(match.awayTeam.name);
 
@@ -333,7 +335,7 @@ function KeyPlayersSection({ match }: { match: FDMatch }) {
                 <span>{homeFlag}</span>
               )}
               <p className="text-xs font-bold uppercase tracking-wide" style={{ color: "var(--color-muted)" }}>
-                {match.homeTeam.name}
+                {match.homeTeam.name ?? "TBD"}
               </p>
             </div>
             <HorizontalCarousel>
@@ -352,7 +354,7 @@ function KeyPlayersSection({ match }: { match: FDMatch }) {
                 <span>{awayFlag}</span>
               )}
               <p className="text-xs font-bold uppercase tracking-wide" style={{ color: "var(--color-muted)" }}>
-                {match.awayTeam.name}
+                {match.awayTeam.name ?? "TBD"}
               </p>
             </div>
             <HorizontalCarousel>
@@ -492,8 +494,8 @@ function SquadsSection({
   awaySquad: FDSquadPlayer[];
 }) {
   const [activeTab, setActiveTab] = useState<"home" | "away">("home");
-  const homeFlag = getFlag(match.homeTeam.name);
-  const awayFlag = getFlag(match.awayTeam.name);
+  const homeFlag = getFlag(match.homeTeam.name ?? undefined);
+  const awayFlag = getFlag(match.awayTeam.name ?? undefined);
 
   if (homeSquad.length === 0 && awaySquad.length === 0) return null;
 
@@ -523,7 +525,7 @@ function SquadsSection({
           ) : (
             <span>{homeFlag}</span>
           )}
-          <span className="truncate">{match.homeTeam.shortName || match.homeTeam.name}</span>
+          <span className="truncate">{match.homeTeam.shortName ?? match.homeTeam.name ?? "TBD"}</span>
           <span
             className="text-xs font-semibold px-1.5 py-0.5 rounded-full flex-shrink-0"
             style={{
@@ -557,7 +559,7 @@ function SquadsSection({
           ) : (
             <span>{awayFlag}</span>
           )}
-          <span className="truncate">{match.awayTeam.shortName || match.awayTeam.name}</span>
+          <span className="truncate">{match.awayTeam.shortName ?? match.awayTeam.name ?? "TBD"}</span>
           <span
             className="text-xs font-semibold px-1.5 py-0.5 rounded-full flex-shrink-0"
             style={{
@@ -586,9 +588,11 @@ function MatchHero({ match }: { match: FDMatch }) {
   const live = isMatchLive(match.status);
   const homeWon = finished && match.score.winner === "HOME_TEAM";
   const awayWon = finished && match.score.winner === "AWAY_TEAM";
-  const homeFlag = getFlag(match.homeTeam.name);
-  const awayFlag = getFlag(match.awayTeam.name);
+  const homeFlag = getFlag(match.homeTeam.name ?? undefined);
+  const awayFlag = getFlag(match.awayTeam.name ?? undefined);
   const crew = isCrewMatch(match);
+  const homeName = match.homeTeam.name ?? "TBD";
+  const awayName = match.awayTeam.name ?? "TBD";
 
   return (
     <div
@@ -629,7 +633,7 @@ function MatchHero({ match }: { match: FDMatch }) {
         {/* Home */}
         <div className="flex-1 flex flex-col items-center gap-2 text-center">
           {match.homeTeam.crest ? (
-            <img src={match.homeTeam.crest} alt={match.homeTeam.name} className="w-16 h-16 object-contain drop-shadow-sm" />
+            <img src={match.homeTeam.crest} alt={homeName} className="w-16 h-16 object-contain drop-shadow-sm" />
           ) : (
             <span className="text-5xl">{homeFlag}</span>
           )}
@@ -638,7 +642,7 @@ function MatchHero({ match }: { match: FDMatch }) {
             style={{ color: homeWon ? "var(--color-text)" : finished ? "var(--color-muted)" : "var(--color-text)" }}
           >
             <span className="mr-1">{homeFlag}</span>
-            {match.homeTeam.name}
+            {homeName}
           </span>
           {homeWon && <span className="text-xs font-bold" style={{ color: "var(--color-accent)" }}>Winner</span>}
         </div>
@@ -676,7 +680,7 @@ function MatchHero({ match }: { match: FDMatch }) {
         {/* Away */}
         <div className="flex-1 flex flex-col items-center gap-2 text-center">
           {match.awayTeam.crest ? (
-            <img src={match.awayTeam.crest} alt={match.awayTeam.name} className="w-16 h-16 object-contain drop-shadow-sm" />
+            <img src={match.awayTeam.crest} alt={awayName} className="w-16 h-16 object-contain drop-shadow-sm" />
           ) : (
             <span className="text-5xl">{awayFlag}</span>
           )}
@@ -685,7 +689,7 @@ function MatchHero({ match }: { match: FDMatch }) {
             style={{ color: awayWon ? "var(--color-text)" : finished ? "var(--color-muted)" : "var(--color-text)" }}
           >
             <span className="mr-1">{awayFlag}</span>
-            {match.awayTeam.name}
+            {awayName}
           </span>
           {awayWon && <span className="text-xs font-bold" style={{ color: "var(--color-accent)" }}>Winner</span>}
         </div>
@@ -743,7 +747,7 @@ function H2HSection({ match, h2h }: { match: FDMatch; h2h: FDH2HResponse }) {
             <div className="flex-1 text-center">
               <p className="text-2xl font-black" style={{ color: "var(--color-text)" }}>{homeRecord.wins}</p>
               <p className="text-xs font-semibold mt-0.5" style={{ color: "var(--color-muted)" }}>
-                {match.homeTeam.shortName || match.homeTeam.name} wins
+                {match.homeTeam.shortName ?? match.homeTeam.name ?? "TBD"} wins
               </p>
             </div>
             <div className="flex flex-col items-center gap-1">
@@ -753,7 +757,7 @@ function H2HSection({ match, h2h }: { match: FDMatch; h2h: FDH2HResponse }) {
             <div className="flex-1 text-center">
               <p className="text-2xl font-black" style={{ color: "var(--color-text)" }}>{awayRecord.wins}</p>
               <p className="text-xs font-semibold mt-0.5" style={{ color: "var(--color-muted)" }}>
-                {match.awayTeam.shortName || match.awayTeam.name} wins
+                {match.awayTeam.shortName ?? match.awayTeam.name ?? "TBD"} wins
               </p>
             </div>
           </div>
@@ -790,13 +794,13 @@ function H2HSection({ match, h2h }: { match: FDMatch; h2h: FDH2HResponse }) {
                     </span>
                     <div className="flex-1 flex items-center justify-between gap-2 min-w-0">
                       <span className={`flex items-center gap-1 font-semibold truncate ${winner === "HOME_TEAM" ? "" : "opacity-60"}`} style={{ color: "var(--color-text)" }}>
-                        {pmHomeFlag} {pm.homeTeam.shortName || pm.homeTeam.name}
+                        {pmHomeFlag} {pm.homeTeam.shortName ?? pm.homeTeam.name ?? "TBD"}
                       </span>
                       <span className="font-black tabular-nums flex-shrink-0" style={{ color: "var(--color-accent)" }}>
                         {pm.score.fullTime.home} – {pm.score.fullTime.away}
                       </span>
                       <span className={`flex items-center gap-1 font-semibold text-right truncate ${winner === "AWAY_TEAM" ? "" : "opacity-60"}`} style={{ color: "var(--color-text)" }}>
-                        {pm.awayTeam.shortName || pm.awayTeam.name} {pmAwayFlag}
+                        {pm.awayTeam.shortName ?? pm.awayTeam.name ?? "TBD"} {pmAwayFlag}
                       </span>
                     </div>
                     <span className="text-xs flex-shrink-0" style={{ color: "var(--color-muted)" }}>
@@ -856,8 +860,8 @@ function StandingsSection({ match, standings }: { match: FDMatch; standings: FDS
                   <td className="py-2 font-semibold" style={{ color: "var(--color-text)" }}>
                     <div className="flex items-center gap-1.5">
                       {entry.team.crest && <img src={entry.team.crest} alt="" className="w-4 h-4 object-contain" />}
-                      <span>{getFlag(entry.team.name)}</span>
-                      <span>{entry.team.shortName || entry.team.name}</span>
+                      <span>{getFlag(entry.team.name ?? undefined)}</span>
+                      <span>{entry.team.shortName ?? entry.team.name ?? "TBD"}</span>
                     </div>
                   </td>
                   <td className="py-2 text-center" style={{ color: "var(--color-muted)" }}>{entry.playedGames}</td>
@@ -878,6 +882,258 @@ function StandingsSection({ match, standings }: { match: FDMatch; standings: FDS
         Top 2 teams advance · <span style={{ color: "var(--color-accent)" }}>Highlighted</span> = teams in this match.
       </p>
     </Section>
+  );
+}
+
+// ── Match Timeline (goals + cards) ────────────────────────────────
+
+function minuteLabel(minute: number, extra?: number | null): string {
+  if (extra && extra > 0) return `${minute}+${extra}'`;
+  return `${minute}'`;
+}
+
+function GoalIcon({ type }: { type: string }) {
+  if (type === "OWN") return <span title="Own goal" className="text-base">⚽</span>;
+  if (type === "PENALTY") return <span title="Penalty" className="text-base">🅿️</span>;
+  return <span className="text-base">⚽</span>;
+}
+
+function CardIcon({ card }: { card: string }) {
+  if (card === "RED_CARD") return <span title="Red card" className="text-base">🟥</span>;
+  if (card === "YELLOW_RED_CARD") return <span title="2nd yellow / red" className="text-base">🟨🟥</span>;
+  return <span title="Yellow card" className="text-base">🟨</span>;
+}
+
+function MatchTimeline({ match }: { match: FDMatch }) {
+  const finished = isMatchFinished(match.status);
+  const live = isMatchLive(match.status);
+  if (!finished && !live) return null;
+
+  const goals: FDGoal[] = match.goals ?? [];
+  const bookings: FDBooking[] = match.bookings ?? [];
+
+  // Build combined event list sorted by minute
+  type TimelineEvent =
+    | { kind: "goal"; minute: number; extra?: number | null; goal: FDGoal }
+    | { kind: "card"; minute: number; extra?: number | null; booking: FDBooking };
+
+  const events: TimelineEvent[] = [
+    ...goals.map((g) => ({ kind: "goal" as const, minute: g.minute, extra: g.extraTime, goal: g })),
+    ...bookings.map((b) => ({ kind: "card" as const, minute: b.minute, extra: null, booking: b })),
+  ].sort((a, b) => a.minute - b.minute);
+
+  const homeId = match.homeTeam.id;
+  const homeName = match.homeTeam.name ?? "Home";
+  const awayName = match.awayTeam.name ?? "Away";
+
+  // Penalty shootout
+  const hasPens = match.score.duration === "PENALTY_SHOOTOUT" && match.score.penalties;
+  const homeScore = match.score.fullTime.home;
+  const awayScore = match.score.fullTime.away;
+  const homeHT = match.score.halfTime.home;
+  const awayHT = match.score.halfTime.away;
+  const homeET = match.score.extraTime?.home;
+  const awayET = match.score.extraTime?.away;
+
+  return (
+    <Section title="Match Timeline" icon={<span className="text-sm">📋</span>}>
+      {/* Score breakdown */}
+      <div className="flex flex-wrap gap-3 mb-5">
+        {homeHT !== null && homeHT !== undefined && (
+          <div
+            className="flex-1 min-w-[120px] rounded-xl px-3 py-2 text-center"
+            style={{ backgroundColor: "var(--bg-page)", border: "1px solid var(--color-border)" }}
+          >
+            <p className="text-xs font-semibold mb-0.5" style={{ color: "var(--color-muted)" }}>Half Time</p>
+            <p className="text-lg font-black tabular-nums" style={{ color: "var(--color-text)" }}>
+              {homeHT} – {awayHT}
+            </p>
+          </div>
+        )}
+        {homeET !== null && homeET !== undefined && (
+          <div
+            className="flex-1 min-w-[120px] rounded-xl px-3 py-2 text-center"
+            style={{ backgroundColor: "var(--bg-page)", border: "1px solid var(--color-border)" }}
+          >
+            <p className="text-xs font-semibold mb-0.5" style={{ color: "var(--color-muted)" }}>After Extra Time</p>
+            <p className="text-lg font-black tabular-nums" style={{ color: "var(--color-text)" }}>
+              {homeET} – {awayET}
+            </p>
+          </div>
+        )}
+        {hasPens && (
+          <div
+            className="flex-1 min-w-[120px] rounded-xl px-3 py-2 text-center"
+            style={{
+              backgroundColor: "color-mix(in srgb, var(--color-accent) 8%, transparent)",
+              border: "1px solid color-mix(in srgb, var(--color-accent) 20%, transparent)",
+            }}
+          >
+            <p className="text-xs font-semibold mb-0.5" style={{ color: "var(--color-accent)" }}>Penalties</p>
+            <p className="text-lg font-black tabular-nums" style={{ color: "var(--color-text)" }}>
+              {match.score.penalties!.home} – {match.score.penalties!.away}
+            </p>
+          </div>
+        )}
+        <div
+          className="flex-1 min-w-[120px] rounded-xl px-3 py-2 text-center"
+          style={{
+            backgroundColor: "color-mix(in srgb, var(--color-accent) 5%, transparent)",
+            border: "1px solid color-mix(in srgb, var(--color-accent) 15%, transparent)",
+          }}
+        >
+          <p className="text-xs font-semibold mb-0.5" style={{ color: "var(--color-accent)" }}>Full Time</p>
+          <p className="text-xl font-black tabular-nums" style={{ color: "var(--color-text)" }}>
+            {homeScore} – {awayScore}
+          </p>
+        </div>
+      </div>
+
+      {/* Event list */}
+      {events.length === 0 ? (
+        <p className="text-sm text-center py-4" style={{ color: "var(--color-muted)" }}>
+          Detailed event data not available for this match.
+        </p>
+      ) : (
+        <div className="flex flex-col gap-1.5">
+          {events.map((ev, idx) => {
+            const isHome = ev.kind === "goal"
+              ? ev.goal.team?.id === homeId
+              : ev.booking.team?.id === homeId;
+
+            const playerName = ev.kind === "goal"
+              ? ev.goal.scorer?.name ?? (ev.goal.type === "OWN" ? "Own Goal" : "Unknown")
+              : ev.booking.player?.name ?? "Unknown";
+
+            const assistName = ev.kind === "goal" && ev.goal.assist?.name
+              ? ev.goal.assist.name
+              : null;
+
+            const teamName = isHome ? homeName : awayName;
+
+            return (
+              <div
+                key={idx}
+                className={`flex items-center gap-3 px-3 py-2 rounded-xl text-xs ${isHome ? "" : "flex-row-reverse"}`}
+                style={{ backgroundColor: "var(--bg-page)", border: "1px solid var(--color-border)" }}
+              >
+                {/* Minute */}
+                <span
+                  className="font-black tabular-nums flex-shrink-0 w-10 text-center"
+                  style={{ color: "var(--color-accent)" }}
+                >
+                  {minuteLabel(ev.minute, ev.extra ?? undefined)}
+                </span>
+
+                {/* Icon */}
+                <span className="flex-shrink-0">
+                  {ev.kind === "goal"
+                    ? <GoalIcon type={ev.goal.type} />
+                    : <CardIcon card={ev.booking.card} />}
+                </span>
+
+                {/* Player + assist */}
+                <div className={`flex-1 flex flex-col min-w-0 ${isHome ? "" : "items-end"}`}>
+                  <span className="font-bold truncate" style={{ color: "var(--color-text)" }}>
+                    {playerName}
+                  </span>
+                  {assistName && (
+                    <span className="truncate" style={{ color: "var(--color-muted)" }}>
+                      Assist: {assistName}
+                    </span>
+                  )}
+                  <span style={{ color: "var(--color-muted)", opacity: 0.7 }}>{teamName}</span>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      )}
+    </Section>
+  );
+}
+
+// ── Match Report Links ────────────────────────────────────────────
+
+function MatchReportLinks({ match }: { match: FDMatch }) {
+  if (!isMatchFinished(match.status)) return null;
+
+  const homeName = match.homeTeam.name ?? "TBD";
+  const awayName = match.awayTeam.name ?? "TBD";
+  const matchQuery = encodeURIComponent(`${homeName} vs ${awayName} World Cup 2026`);
+
+  const links = [
+    {
+      label: "BBC Sport",
+      href: `https://www.bbc.com/sport/football/world-cup`,
+      icon: "📰",
+    },
+    {
+      label: "Google News",
+      href: `https://news.google.com/search?q=${matchQuery}`,
+      icon: "🔍",
+    },
+    {
+      label: "ESPN",
+      href: `https://www.espn.com/soccer/match/_/gameId/${match.id}`,
+      icon: "🏟️",
+    },
+  ];
+
+  return (
+    <Section title="Match Coverage" icon={<span className="text-sm">🗞️</span>}>
+      <div className="flex flex-wrap gap-2">
+        {links.map((link) => (
+          <a
+            key={link.label}
+            href={link.href}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-semibold transition-opacity hover:opacity-70"
+            style={{
+              backgroundColor: "var(--bg-page)",
+              border: "1px solid var(--color-border)",
+              color: "var(--color-text)",
+            }}
+          >
+            <span>{link.icon}</span>
+            {link.label}
+          </a>
+        ))}
+      </div>
+      <p className="text-xs mt-3" style={{ color: "var(--color-muted)" }}>
+        Opens external sites — match reports, stats, and highlights.
+      </p>
+    </Section>
+  );
+}
+
+// ── TBD Match Notice ──────────────────────────────────────────────
+
+function TBDNotice({ match }: { match: FDMatch }) {
+  const homeIsTBD = !match.homeTeam.name;
+  const awayIsTBD = !match.awayTeam.name;
+  if (!homeIsTBD && !awayIsTBD) return null;
+
+  return (
+    <div
+      className="rounded-2xl px-5 py-4 mb-5 flex items-start gap-3"
+      style={{
+        backgroundColor: "color-mix(in srgb, var(--color-accent) 8%, transparent)",
+        border: "1px solid color-mix(in srgb, var(--color-accent) 20%, transparent)",
+      }}
+    >
+      <span className="text-xl flex-shrink-0">🏆</span>
+      <div>
+        <p className="text-sm font-bold" style={{ color: "var(--color-text)" }}>
+          Teams not yet determined
+        </p>
+        <p className="text-xs mt-1" style={{ color: "var(--color-muted)" }}>
+          This {getStageName(match.stage, match.group)} fixture will be populated once the qualifying
+          round results are confirmed. Check back after earlier matches conclude.
+        </p>
+      </div>
+    </div>
   );
 }
 
@@ -906,11 +1162,21 @@ export default function MatchDetailClient({ match, h2h, standings, homeSquad, aw
 
         <MatchHero match={match} />
 
+        {/* TBD teams notice for undecided knockout fixtures */}
+        <TBDNotice match={match} />
+
+        {/* Match day center — timeline (only for finished/live) */}
+        <MatchTimeline match={match} />
+
+        {/* Match prediction widget */}
         <div className="mb-5">
           <MatchPredictionWidget match={match} />
         </div>
 
         <div className="flex flex-col gap-5">
+          {/* Match coverage links for finished matches */}
+          <MatchReportLinks match={match} />
+
           {/* H2H */}
           {h2h ? (
             <H2HSection match={match} h2h={h2h} />

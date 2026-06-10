@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
@@ -10,6 +11,7 @@ import {
   isMatchFinished,
 } from "@/lib/football-data";
 import { getTodaysQuestion, type DailyQuestion } from "@/data/daily-questions";
+import { getTeamByFdoName } from "@/data/teams-data";
 import SectionHeader from "@/components/SectionHeader";
 import TournamentBanner from "@/components/TournamentBanner";
 
@@ -97,8 +99,8 @@ function MatchCard({ match, isCrewMatch }: { match: FDMatch; isCrewMatch: boolea
   const live = isMatchLive(match.status);
   const upcoming = !finished && !live;
 
-  const homeFlag = getFlag(match.homeTeam.name);
-  const awayFlag = getFlag(match.awayTeam.name);
+  const homeFlag = getFlag(match.homeTeam.name ?? undefined);
+  const awayFlag = getFlag(match.awayTeam.name ?? undefined);
   const stageLabel = getStageName(match.stage, match.group);
 
   const homeScore = match.score.fullTime.home;
@@ -107,8 +109,8 @@ function MatchCard({ match, isCrewMatch }: { match: FDMatch; isCrewMatch: boolea
   const homeWon = finished && match.score.winner === "HOME_TEAM";
   const awayWon = finished && match.score.winner === "AWAY_TEAM";
 
-  // Deep-link: crew matches go to match picks tab, others to tournament tab
-  const predHref = isCrewMatch ? "/predictions?tab=matches" : "/predictions?tab=tournament";
+  // Deep-link: always open the Matches tab scrolled to this specific match card
+  const predHref = `/predictions?tab=matches&match=${match.id}`;
 
   return (
     <Link
@@ -146,16 +148,46 @@ function MatchCard({ match, isCrewMatch }: { match: FDMatch; isCrewMatch: boolea
         {/* Teams + score */}
         <div className="flex items-center gap-3">
           {/* Home team */}
-          <div className="flex-1 flex flex-col items-center gap-1.5 text-center min-w-0">
-            <span className="text-3xl">{homeFlag}</span>
-            <span
-              className="text-xs font-bold leading-tight line-clamp-2"
-              style={{ color: homeWon ? "var(--color-text)" : finished ? "var(--color-muted)" : "var(--color-text)" }}
-            >
-              {match.homeTeam.shortName || match.homeTeam.name}
-            </span>
-            {homeWon && <span className="text-xs font-bold" style={{ color: "var(--color-accent)" }}>W</span>}
-          </div>
+          {(() => {
+            const homeSlug = getTeamByFdoName(match.homeTeam.name ?? "")?.slug;
+            const inner = (
+              <div className="flex-1 flex flex-col items-center gap-1.5 text-center min-w-0">
+                {match.homeTeam.crest ? (
+                  <img src={match.homeTeam.crest} alt="" width={36} height={36} style={{ objectFit: "contain" }} />
+                ) : (
+                  <span className="text-3xl">{homeFlag}</span>
+                )}
+                <span
+                  className="text-xs font-bold leading-tight line-clamp-2"
+                  style={{ color: homeWon ? "var(--color-text)" : finished ? "var(--color-muted)" : "var(--color-text)" }}
+                >
+                  {match.homeTeam.shortName ?? match.homeTeam.name ?? "TBD"}
+                </span>
+                {homeWon && <span className="text-xs font-bold" style={{ color: "var(--color-accent)" }}>W</span>}
+              </div>
+            );
+            return homeSlug ? (
+              <a
+                href={`/teams/${homeSlug}`}
+                className="flex-1 flex flex-col items-center gap-1.5 text-center min-w-0 rounded-xl p-1 transition-all hover:bg-black/5"
+                style={{ textDecoration: "none" }}
+                onClick={(e) => e.stopPropagation()}
+              >
+                {match.homeTeam.crest ? (
+                  <img src={match.homeTeam.crest} alt="" width={36} height={36} style={{ objectFit: "contain" }} />
+                ) : (
+                  <span className="text-3xl">{homeFlag}</span>
+                )}
+                <span
+                  className="text-xs font-bold leading-tight line-clamp-2"
+                  style={{ color: homeWon ? "var(--color-text)" : finished ? "var(--color-muted)" : "var(--color-text)" }}
+                >
+                  {match.homeTeam.shortName ?? match.homeTeam.name ?? "TBD"}
+                </span>
+                {homeWon && <span className="text-xs font-bold" style={{ color: "var(--color-accent)" }}>W</span>}
+              </a>
+            ) : inner;
+          })()}
 
           {/* Score / time */}
           <div className="flex flex-col items-center gap-1 flex-shrink-0 min-w-[64px]">
@@ -196,16 +228,45 @@ function MatchCard({ match, isCrewMatch }: { match: FDMatch; isCrewMatch: boolea
           </div>
 
           {/* Away team */}
-          <div className="flex-1 flex flex-col items-center gap-1.5 text-center min-w-0">
-            <span className="text-3xl">{awayFlag}</span>
-            <span
-              className="text-xs font-bold leading-tight line-clamp-2"
-              style={{ color: awayWon ? "var(--color-text)" : finished ? "var(--color-muted)" : "var(--color-text)" }}
-            >
-              {match.awayTeam.shortName || match.awayTeam.name}
-            </span>
-            {awayWon && <span className="text-xs font-bold" style={{ color: "var(--color-accent)" }}>W</span>}
-          </div>
+          {(() => {
+            const awaySlug = getTeamByFdoName(match.awayTeam.name ?? "")?.slug;
+            return awaySlug ? (
+              <a
+                href={`/teams/${awaySlug}`}
+                className="flex-1 flex flex-col items-center gap-1.5 text-center min-w-0 rounded-xl p-1 transition-all hover:bg-black/5"
+                style={{ textDecoration: "none" }}
+                onClick={(e) => e.stopPropagation()}
+              >
+                {match.awayTeam.crest ? (
+                  <img src={match.awayTeam.crest} alt="" width={36} height={36} style={{ objectFit: "contain" }} />
+                ) : (
+                  <span className="text-3xl">{awayFlag}</span>
+                )}
+                <span
+                  className="text-xs font-bold leading-tight line-clamp-2"
+                  style={{ color: awayWon ? "var(--color-text)" : finished ? "var(--color-muted)" : "var(--color-text)" }}
+                >
+                  {match.awayTeam.shortName ?? match.awayTeam.name ?? "TBD"}
+                </span>
+                {awayWon && <span className="text-xs font-bold" style={{ color: "var(--color-accent)" }}>W</span>}
+              </a>
+            ) : (
+              <div className="flex-1 flex flex-col items-center gap-1.5 text-center min-w-0">
+                {match.awayTeam.crest ? (
+                  <img src={match.awayTeam.crest} alt="" width={36} height={36} style={{ objectFit: "contain" }} />
+                ) : (
+                  <span className="text-3xl">{awayFlag}</span>
+                )}
+                <span
+                  className="text-xs font-bold leading-tight line-clamp-2"
+                  style={{ color: awayWon ? "var(--color-text)" : finished ? "var(--color-muted)" : "var(--color-text)" }}
+                >
+                  {match.awayTeam.shortName ?? match.awayTeam.name ?? "TBD"}
+                </span>
+                {awayWon && <span className="text-xs font-bold" style={{ color: "var(--color-accent)" }}>W</span>}
+              </div>
+            );
+          })()}
         </div>
 
         {/* Pick CTA (upcoming only) */}
@@ -428,8 +489,8 @@ export default function ArenaClient({ matches }: ArenaClientProps) {
     const matchDate = localDateStr(match.utcDate); // local calendar date, not UTC
     if (!crewDates.includes(matchDate)) return false;
     return (
-      CREW_MATCH_API_PATTERN.has(match.homeTeam.name) ||
-      CREW_MATCH_API_PATTERN.has(match.awayTeam.name)
+      CREW_MATCH_API_PATTERN.has(match.homeTeam.name ?? "") ||
+      CREW_MATCH_API_PATTERN.has(match.awayTeam.name ?? "")
     );
   };
 

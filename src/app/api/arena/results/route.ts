@@ -35,9 +35,9 @@ export async function GET() {
 
     let winner: string;
     if (score.winner === "HOME_TEAM") {
-      winner = homeTeam.name;
+      winner = homeTeam.name ?? "Home";
     } else if (score.winner === "AWAY_TEAM") {
-      winner = awayTeam.name;
+      winner = awayTeam.name ?? "Away";
     } else {
       winner = "Draw";
     }

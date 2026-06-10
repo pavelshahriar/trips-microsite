@@ -18,6 +18,18 @@ const NAV_LINKS = [
   { href: "/trip-vault", label: "Trip Vault" },
 ];
 
+/** The three "special" nav items share identical pill styling across all themes */
+function isSpecial(href: string) {
+  return href === "/arena" || href === "/predictions" || href === "/trip-vault";
+}
+
+function navLabel(href: string, label: string) {
+  if (href === "/trip-vault") return `🔒 ${label}`;
+  if (href === "/predictions") return `🏆 ${label}`;
+  if (href === "/arena") return `⚽ ${label}`;
+  return label;
+}
+
 export default function NavBar() {
   const pathname = usePathname();
   const [menuOpen, setMenuOpen] = useState(false);
@@ -55,33 +67,29 @@ export default function NavBar() {
           <nav className="hidden md:flex items-center gap-1">
             {NAV_LINKS.map((link) => {
               const isActive = pathname === link.href;
-              const isVault = link.href === "/trip-vault";
-              const isPredictions = link.href === "/predictions";
-              const isArena = link.href === "/arena";
+              const special = isSpecial(link.href);
               return (
                 <Link
                   key={link.href}
                   href={link.href}
-                  className="px-3 py-2 rounded-lg text-sm font-medium transition-all duration-200"
+                  className="px-3 py-2 rounded-lg text-sm transition-all duration-200"
                   style={{
                     color: isActive
                       ? "var(--color-nav-active)"
-                      : isPredictions
+                      : special
                       ? "var(--color-accent-dark)"
-                      : isArena
-                      ? "var(--color-accent)"
                       : "var(--color-nav-link)",
                     background: isActive
                       ? "rgba(255,255,255,0.08)"
+                      : special
+                      ? "rgba(255,255,255,0.06)"
                       : "transparent",
-                    border: isVault || isPredictions
-                      ? "1px solid rgba(255,255,255,0.15)"
-                      : "none",
-                    marginLeft: isVault || isPredictions ? "8px" : "0",
-                    fontWeight: isPredictions || isArena ? 700 : undefined,
+                    border: special ? "1px solid rgba(255,255,255,0.15)" : "none",
+                    marginLeft: special ? "8px" : "0",
+                    fontWeight: special ? 700 : undefined,
                   }}
                 >
-                  {isVault ? `🔒 ${link.label}` : isPredictions ? `🏆 ${link.label}` : isArena ? `⚽ ${link.label}` : link.label}
+                  {navLabel(link.href, link.label)}
                 </Link>
               );
             })}
@@ -116,29 +124,29 @@ export default function NavBar() {
             <nav className="px-4 py-3 flex flex-col gap-1">
               {NAV_LINKS.map((link) => {
                 const isActive = pathname === link.href;
-                const isVault = link.href === "/trip-vault";
-                const isPredictions = link.href === "/predictions";
-                const isArena = link.href === "/arena";
+                const special = isSpecial(link.href);
                 return (
                   <Link
                     key={link.href}
                     href={link.href}
                     onClick={() => setMenuOpen(false)}
-                    className="px-4 py-3 rounded-lg text-sm font-medium transition-all duration-200"
+                    className="px-4 py-3 rounded-lg text-sm transition-all duration-200"
                     style={{
                       color: isActive
                         ? "var(--color-nav-active)"
-                        : isPredictions
+                        : special
                         ? "var(--color-accent-dark)"
-                        : isArena
-                        ? "var(--color-accent)"
                         : "var(--color-nav-link)",
-                      background: isActive ? "rgba(255,255,255,0.08)" : "transparent",
-                      border: isVault || isPredictions ? "1px solid rgba(255,255,255,0.15)" : "none",
-                      fontWeight: isPredictions || isArena ? 700 : undefined,
+                      background: isActive
+                        ? "rgba(255,255,255,0.08)"
+                        : special
+                        ? "rgba(255,255,255,0.06)"
+                        : "transparent",
+                      border: special ? "1px solid rgba(255,255,255,0.15)" : "none",
+                      fontWeight: special ? 700 : undefined,
                     }}
                   >
-                    {isVault ? `🔒 ${link.label}` : isPredictions ? `🏆 ${link.label}` : isArena ? `⚽ ${link.label}` : link.label}
+                    {navLabel(link.href, link.label)}
                   </Link>
                 );
               })}

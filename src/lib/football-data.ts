@@ -20,11 +20,33 @@ export type MatchStatus =
   | "SUSPENDED";
 
 export interface FDTeam {
-  id: number;
-  name: string;
-  shortName: string;
-  tla: string;
-  crest: string;
+  /** null for undecided knockout-round fixtures (e.g. "Winner of Match 49") */
+  id: number | null;
+  name: string | null;
+  shortName: string | null;
+  tla: string | null;
+  crest: string | null;
+}
+
+// ── Match events (returned by /matches/{id} on all tiers) ─────────
+
+export interface FDGoal {
+  minute: number;
+  /** Extra-time minute suffix, e.g. +3 */
+  extraTime?: number | null;
+  /** "NORMAL" | "PENALTY" | "OWN" | "EXTRA_TIME" */
+  type: string;
+  team: { id: number; name: string } | null;
+  scorer: { id: number; name: string } | null;
+  assist: { id: number; name: string } | null;
+}
+
+export interface FDBooking {
+  minute: number;
+  team: { id: number; name: string } | null;
+  player: { id: number; name: string } | null;
+  /** "YELLOW_CARD" | "RED_CARD" | "YELLOW_RED_CARD" */
+  card: string;
 }
 
 export interface FDScore {
@@ -49,6 +71,9 @@ export interface FDMatch {
   score: FDScore;
   venue: string | null;
   referees: Array<{ id: number; name: string; type: string; nationality: string }>;
+  /** Present in single-match fetches (/matches/{id}) — null in collection responses */
+  goals?: FDGoal[] | null;
+  bookings?: FDBooking[] | null;
 }
 
 export interface FDStandingEntry {
@@ -211,7 +236,8 @@ export const TEAM_FLAGS: Record<string, string> = {
   "Solomon Islands": "🇸🇧",
 };
 
-export function getFlag(teamName: string): string {
+export function getFlag(teamName: string | null | undefined): string {
+  if (!teamName) return "🏳️";
   return TEAM_FLAGS[teamName] ?? "🏳️";
 }
 
@@ -286,6 +312,15 @@ export async function getMatch(matchId: number): Promise<FDMatch | null> {
   return data ?? null;
 }
 
+/**
+ * Fetch a single match with full event detail (goals, bookings).
+ * Uses 60s revalidate for finished matches (data won't change).
+ */
+export async function getMatchWithEvents(matchId: number): Promise<FDMatch | null> {
+  const data = await fdFetch<FDMatch>(`/matches/${matchId}`, 60);
+  return data ?? null;
+}
+
 // ── H2H types & fetcher ──────────────────────────────────────────
 
 export interface FDH2HTeamRecord {
@@ -324,10 +359,43 @@ export interface FDSquadPlayer {
   shirtNumber: number | null;
 }
 
+export interface FDCoach {
+  id: number;
+  firstName: string;
+  lastName: string;
+  name: string;
+  dateOfBirth: string;
+  nationality: string;
+  contract?: { start: string; until: string };
+}
+
+export interface FDTeamInfo {
+  id: number;
+  name: string;
+  shortName: string;
+  tla: string;
+  crest: string;
+  address?: string;
+  website?: string;
+  founded?: number;
+  clubColors?: string;
+  venue?: string;
+  coach: FDCoach | null;
+  squad: FDSquadPlayer[];
+}
+
 /** Fetch the full squad for a team. Cached 24h (squads rarely change). */
 export async function getTeamSquad(teamId: number): Promise<FDSquadPlayer[]> {
   const data = await fdFetch<{ squad: FDSquadPlayer[] }>(`/teams/${teamId}`, 86400);
   return data?.squad ?? [];
+}
+
+/**
+ * Fetch full team info — coach + squad in one call. Cached 24h.
+ * Returns null if team not found or API key is missing.
+ */
+export async function getTeamInfo(teamId: number): Promise<FDTeamInfo | null> {
+  return fdFetch<FDTeamInfo>(`/teams/${teamId}`, 86400);
 }
 
 // ── Utility helpers ──────────────────────────────────────────────

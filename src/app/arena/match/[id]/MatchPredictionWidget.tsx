@@ -16,7 +16,7 @@
 import { useEffect, useState, useCallback } from "react";
 import Link from "next/link";
 import { Check, Lock, LogIn, Loader2 } from "lucide-react";
-import { createClient } from "@/lib/supabase";
+import { createClient } from "@/lib/supabase-browser";
 import { isMatchFinished, isMatchLive, getFlag } from "@/lib/football-data";
 import type { FDMatch } from "@/lib/football-data";
 
@@ -405,9 +405,9 @@ export default function MatchPredictionWidget({ match }: { match: FDMatch }) {
           </p>
           <div className="grid grid-cols-3 gap-2">
             {[
-              { v: match.homeTeam.name, label: `${homeFlag} ${match.homeTeam.shortName || match.homeTeam.name}` },
+              { v: match.homeTeam.name ?? "TBD", label: `${homeFlag} ${match.homeTeam.shortName ?? match.homeTeam.name ?? "TBD"}` },
               { v: "Draw", label: "🤝 Draw" },
-              { v: match.awayTeam.name, label: `${awayFlag} ${match.awayTeam.shortName || match.awayTeam.name}` },
+              { v: match.awayTeam.name ?? "TBD", label: `${awayFlag} ${match.awayTeam.shortName ?? match.awayTeam.name ?? "TBD"}` },
             ].map(({ v, label }) => {
               const sel = pick.winner === v;
               return (
