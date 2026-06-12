@@ -1,7 +1,6 @@
 // ─────────────────────────────────────────────────────────────────────────────
 // Trip Vault — Crew configuration
 // Each entry maps a crew member's email to their vault profile.
-// Update the email keys when you have everyone's real addresses.
 // ─────────────────────────────────────────────────────────────────────────────
 
 export type SupportedTeam = "Brazil" | "Germany" | "Argentina";
@@ -27,7 +26,6 @@ export const TEAM_DATA: Record<SupportedTeam, { flag: string; color: string }> =
 };
 
 // ── Crew members keyed by email ───────────────────────────────────────────────
-// IMPORTANT: Replace placeholder emails with real crew emails before launch.
 export const VAULT_CREW: Record<string, VaultCrewMember> = {
   "shahriar.tanvir@gmail.com": {
     name: "Pavel",
@@ -45,8 +43,7 @@ export const VAULT_CREW: Record<string, VaultCrewMember> = {
     gift: "your captain's armband — you earned it, mate. Confirm you got the crew's welcome pack.",
   },
 
-  // ── Update the emails below with real ones ────────────────────────────────
-  "rupan@example.com": {
+  "tanzirmannan@gmail.com": {
     name: "Rupan",
     nickname: "The Londoner",
     nicknameReason:
@@ -63,7 +60,7 @@ export const VAULT_CREW: Record<string, VaultCrewMember> = {
       "your welcome pack from the crew — check your bag, it should be in there.",
   },
 
-  "topu@example.com": {
+  "tmullick25@gmail.com": {
     name: "Topu",
     nickname: "The Messiah",
     nicknameReason:
@@ -79,7 +76,7 @@ export const VAULT_CREW: Record<string, VaultCrewMember> = {
       "your welcome pack — a little something from the boys to get you in the mood.",
   },
 
-  "rocky@example.com": {
+  "md_riasat@yahoo.com.au": {
     name: "Rocky",
     nickname: "The Kangaroo",
     nicknameReason:
@@ -91,12 +88,12 @@ export const VAULT_CREW: Record<string, VaultCrewMember> = {
       "Did you know Australia's farthest World Cup run was 2006 — the same year they knocked out Croatia? Rocky probably watched that in a pub and said 'yeah but Argentina tho.'",
     teamInspo: "No worries, mate. Messi's got this.",
     welcomeMessage:
-      "G'day mate! Longest trip of the crew, shortest sleep, first one at the bar. Classic Rocky.",
+      "G'day mate! Longest trip of the crew, shortest sleep, first one at the bar. Classic rocky.",
     gift:
       "your welcome pack — the one with the Vegemite survival kit. You're welcome.",
   },
 
-  "imran@example.com": {
+  "shah.imran.md@gmail.com": {
     name: "Imran",
     nickname: "The Pioneer",
     nicknameReason:
@@ -105,15 +102,15 @@ export const VAULT_CREW: Record<string, VaultCrewMember> = {
     team: "Brazil",
     teamEmoji: "🇧🇷",
     teamFunFact:
-      "Brazil's 1970 squad, featuring Pelé, is widely considered the greatest football team ever assembled. Imran probably has a poster.",
+      "Brazil's 1970 squad, featuring Pelé, is widely considered the greatest football team ever assembled. imran probably has a poster.",
     teamInspo: "From Dhaka with love. And samba.",
     welcomeMessage:
-      "Imran! Brother! You actually made it. We had a small bet going. Pavel owes Rupan five dollars.",
+      "imran! Brother! You actually made it. We had a small bet going. Shah owes rupan five dollars.",
     gift:
       "your welcome pack — yellow and green, obviously.",
   },
 
-  "abbas@example.com": {
+  "abbas.viscaria@gmail.com": {
     name: "Abbas",
     nickname: "Maple Messi",
     nicknameReason:
@@ -125,9 +122,26 @@ export const VAULT_CREW: Record<string, VaultCrewMember> = {
       "Argentina beat France in one of the greatest World Cup finals ever in 2022. On penalties. After being 2-0 up, then 2-2, then 3-3. Abbas aged 10 years in 30 minutes.",
     teamInspo: "Cold outside. 🔥 inside. Vamos Argentina.",
     welcomeMessage:
-      "Abbas from the Peg! Put the parka away, brother — it's 35°C in Houston.",
+      "abbas from the Peg! Put the parka away, brother — it's 35°C in Houston.",
     gift:
       "your welcome pack from the crew — light blue and white, just how you like it.",
+  },
+
+  "marfuhkazi213@gmail.com": {
+    name: "Jitu",
+    nickname: "El Showstopper",
+    nicknameReason:
+      "Rolls in late, leaves early, and somehow still makes the biggest entrance in the room. A banker who understands risk and return — except when it comes to punctuality. Short duration, high yield.",
+    city: "Miami",
+    team: "Argentina",
+    teamEmoji: "🇦🇷",
+    teamFunFact:
+      "Argentina beat France in the 2022 final in one of the most dramatic finishes in World Cup history. jitu delivered his match verdict like breaking news. We were all howling.",
+    teamInspo: "Late to the party, first on the dance floor. Vamos!",
+    welcomeMessage:
+      "jitu! The showstopper arrives. We were starting the opening ceremony without you. 😂",
+    gift:
+      "your welcome pack from the crew — arrive fashionably late, leave with everything.",
   },
 };
 
