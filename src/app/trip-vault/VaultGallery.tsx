@@ -122,14 +122,12 @@ async function extractPhotoExif(file: File): Promise<{
   try {
     // Dynamic import avoids SSR issues (exifr uses browser APIs)
     const exifr = await import("exifr");
+
+    // Parse date + dimensions
     const tags = await exifr.parse(file, {
       pick: [
         "DateTimeOriginal",
         "CreateDate",
-        "GPSLatitude",
-        "GPSLongitude",
-        "GPSLatitudeRef",
-        "GPSLongitudeRef",
         "ExifImageWidth",
         "ExifImageHeight",
         "ImageWidth",
@@ -138,37 +136,27 @@ async function extractPhotoExif(file: File): Promise<{
         "PixelYDimension",
       ],
     });
-    if (!tags) throw new Error("no tags");
 
-    const rawDate = tags.DateTimeOriginal ?? tags.CreateDate;
+    // Use exifr.gps() for GPS — always returns decimal lat/lng, handles
+    // DMS arrays and HEIC quirks that raw tag parsing doesn't.
+    const gps = await exifr.gps(file).catch(() => null);
+
+    const rawDate = tags?.DateTimeOriginal ?? tags?.CreateDate;
     const takenAt = rawDate ? new Date(rawDate).toISOString() : null;
 
-    const lat =
-      tags.GPSLatitude != null
-        ? tags.GPSLatitudeRef === "S"
-          ? -tags.GPSLatitude
-          : tags.GPSLatitude
-        : null;
-    const lng =
-      tags.GPSLongitude != null
-        ? tags.GPSLongitudeRef === "W"
-          ? -tags.GPSLongitude
-          : tags.GPSLongitude
-        : null;
+    // Ensure GPS values are plain numbers (not arrays or undefined)
+    const lat = typeof gps?.latitude === "number" ? gps.latitude : null;
+    const lng = typeof gps?.longitude === "number" ? gps.longitude : null;
 
-    const width =
-      tags.ExifImageWidth ??
-      tags.PixelXDimension ??
-      tags.ImageWidth ??
-      null;
-    const height =
-      tags.ExifImageHeight ??
-      tags.PixelYDimension ??
-      tags.ImageHeight ??
-      null;
+    const rawW = tags?.ExifImageWidth ?? tags?.PixelXDimension ?? tags?.ImageWidth;
+    const rawH = tags?.ExifImageHeight ?? tags?.PixelYDimension ?? tags?.ImageHeight;
+    const width = typeof rawW === "number" ? Math.round(rawW) : null;
+    const height = typeof rawH === "number" ? Math.round(rawH) : null;
 
+    console.log("[Vault EXIF]", { takenAt, lat, lng, width, height });
     return { takenAt, lat, lng, width, height };
-  } catch {
+  } catch (exifErr) {
+    console.warn("[Vault EXIF] parse failed, using fallback:", exifErr);
     return {
       takenAt: new Date(file.lastModified).toISOString(),
       lat: null,
@@ -691,12 +679,36 @@ export default function VaultGallery({ user, initialPhotos }: VaultGalleryProps)
         const base = `${user.id}/${Date.now()}_${Math.random().toString(36).slice(2)}`;
         const storagePath = `${base}.${ext}`;
 
+        // Normalize content type — Safari/Chrome may report HEIC as
+        // "image/heif" or "" (empty); infer from extension as fallback.
+        const rawMime = item.file.type;
+        const contentType =
+          rawMime === "image/heif"
+            ? "image/heic"
+            : rawMime ||
+              (ext === "heic" || ext === "heif"
+                ? "image/heic"
+                : item.mediaType === "video"
+                ? "video/mp4"
+                : "image/jpeg");
+
+        console.log("[Vault upload] starting:", {
+          name: item.file.name,
+          rawMime,
+          contentType,
+          size: item.file.size,
+          storagePath,
+        });
+
         // Upload main file (full resolution)
         const { error: storageErr } = await supabase.storage
           .from("vault-photos")
-          .upload(storagePath, item.file, { contentType: item.file.type });
+          .upload(storagePath, item.file, { contentType });
 
-        if (storageErr) throw storageErr;
+        if (storageErr) {
+          console.error("[Vault upload] storage error:", storageErr);
+          throw storageErr;
+        }
 
         // Upload video thumbnail separately
         let thumbnailPath: string | null = null;
@@ -734,14 +746,24 @@ export default function VaultGallery({ user, initialPhotos }: VaultGalleryProps)
           .select()
           .single();
 
-        if (dbErr || !row) throw dbErr ?? new Error("No row returned");
+        if (dbErr || !row) {
+          console.error("[Vault upload] db error:", dbErr);
+          throw dbErr ?? new Error("No row returned");
+        }
 
         newPhotos.push(row as VaultPhoto);
         setPendingItems((prev) =>
           prev.map((p) => (p.id === item.id ? { ...p, uploadState: "done" } : p))
         );
       } catch (err) {
-        const msg = err instanceof Error ? err.message : "Upload failed";
+        console.error("[Vault upload] caught error:", err);
+        // Supabase errors have a .message but aren't Error instances
+        const msg =
+          err instanceof Error
+            ? err.message
+            : typeof err === "object" && err !== null && "message" in err
+            ? String((err as { message: unknown }).message)
+            : "Upload failed";
         setPendingItems((prev) =>
           prev.map((p) =>
             p.id === item.id ? { ...p, uploadState: "error", error: msg } : p
