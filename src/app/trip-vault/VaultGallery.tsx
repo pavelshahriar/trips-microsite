@@ -323,6 +323,7 @@ function PendingCard({
         style={{ width: 72, height: 72, backgroundColor: "var(--bg-surface)" }}
       >
         {item.preview ? (
+          // eslint-disable-next-line @next/next/no-img-element
           <img src={item.preview} alt="" className="w-full h-full object-cover" />
         ) : (
           <div className="w-full h-full flex items-center justify-center">
@@ -484,6 +485,7 @@ function MediaCard({ item, showUploader, onClick, onTogglePublic }: MediaCardPro
       onClick={onClick}
     >
       {thumbUrl ? (
+        // eslint-disable-next-line @next/next/no-img-element
         <img
           src={thumbUrl}
           alt={item.caption ?? ""}
