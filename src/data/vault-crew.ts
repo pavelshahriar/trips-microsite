@@ -127,7 +127,7 @@ export const VAULT_CREW: Record<string, VaultCrewMember> = {
       "your welcome pack from the crew — light blue and white, just how you like it.",
   },
 
-  "marfuhkazi213@gmail.com": {
+  "mafruhkazi213@gmail.com": {
     name: "Jitu",
     nickname: "El Showstopper",
     nicknameReason:
